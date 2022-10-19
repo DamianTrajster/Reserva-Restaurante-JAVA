@@ -78,8 +78,8 @@ public class MenuDelDia extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         // TODO add your handling code here:
-        Bienvenido bv = new Bienvenido();
-        bv.setVisible(true);
+        /*Bienvenido bv = new Bienvenido();
+        bv.setVisible(true);*/
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 

@@ -1,6 +1,8 @@
 
 package usuarios;
 
+import Metodos_sql.Metodos_sql;
+
 
 public class Reserva extends javax.swing.JFrame {
 
@@ -9,6 +11,10 @@ public class Reserva extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(this);
     }
+    
+     Metodos_sql metodos = new Metodos_sql();
+    
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -240,15 +246,15 @@ public class Reserva extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         // TODO add your handling code here:
-        Bienvenido bv = new Bienvenido();
-        bv.setVisible(true);
+      /*  Bienvenido bv = new Bienvenido();
+        bv.setVisible(true);*/
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         // TODO add your handling code here:
-        Mesas ms = new Mesas();
-        ms.setVisible(true);
+       /* Mesas ms = new Mesas();
+        ms.setVisible(true);*/
         this.dispose();
     }//GEN-LAST:event_btnConfirmarActionPerformed
 

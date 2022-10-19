@@ -203,7 +203,7 @@ public class Login extends javax.swing.JFrame {
                JOptionPane.showMessageDialog(this, "Bienvenido/a " + busqueda_nombre );
                Bienvenido ventana = new Bienvenido();
                ventana.lblNombre.setText(busqueda_nombre);
-               ventana.setVisible(true);
+                ventana.setVisible(true);
                this.dispose();
         }else {
              JOptionPane.showMessageDialog(this, "usuario no registrado, por favor darse de alta");
@@ -271,6 +271,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPasswordField txtContraseña;
-    private javax.swing.JTextField txtUsuario;
+    public javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

@@ -142,8 +142,8 @@ public class Mesas extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         // TODO add your handling code here:
-        Reserva re = new Reserva();
-        re.setVisible(true);
+       /* Reserva re = new Reserva();
+        re.setVisible(true);*/
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 

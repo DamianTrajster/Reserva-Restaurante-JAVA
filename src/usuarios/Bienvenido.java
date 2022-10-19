@@ -80,6 +80,11 @@ public class Bienvenido extends javax.swing.JFrame {
         });
 
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         lblNombre.setFont(new java.awt.Font("Open Sans", 1, 14)); // NOI18N
 
@@ -148,31 +153,36 @@ public class Bienvenido extends javax.swing.JFrame {
 
     private void btnReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservaActionPerformed
         // TODO add your handling code here:
-        Reserva re = new Reserva();
+       Reserva re = new Reserva();
         re.setVisible(true);
-        this.dispose();
+       // this.dispose();
     }//GEN-LAST:event_btnReservaActionPerformed
 
     private void btnCartillaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCartillaActionPerformed
         // TODO add your handling code here:
         Cartilla ca = new Cartilla();
         ca.setVisible(true);
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_btnCartillaActionPerformed
 
     private void btnMenuDelDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDelDiaActionPerformed
         // TODO add your handling code here:
         MenuDelDia me = new MenuDelDia();
         me.setVisible(true);
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_btnMenuDelDiaActionPerformed
 
     private void btnPromosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPromosActionPerformed
         // TODO add your handling code here:
         Promos pr = new Promos();
         pr.setVisible(true);
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_btnPromosActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+          this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments
