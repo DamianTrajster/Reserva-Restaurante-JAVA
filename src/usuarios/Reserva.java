@@ -11,9 +11,9 @@ public class Reserva extends javax.swing.JFrame {
     //Declaramos e inicializamos las variables para los JTable y Total de los productos
     DefaultTableModel m;
     static double total = 0;
+
     
-     double precioactual=0.0;
-      double importe=0.0;
+
 
     public Reserva() {
         initComponents();
@@ -142,21 +142,32 @@ public class Reserva extends javax.swing.JFrame {
     //Metodo para cancelar la compra de Productos
     public void limpiarPanel(){
         int limp;
-       
-	limp = JOptionPane.showConfirmDialog(null,"¿Está seguro de cancelar la compra?","Advertencia",JOptionPane.YES_NO_OPTION);
-	if(limp == JOptionPane.YES_NO_OPTION){
+            
+      
+        try {
+            limp = JOptionPane.showConfirmDialog(null,"¿Está seguro de cancelar la compra?","Advertencia",JOptionPane.YES_NO_OPTION);
+            if(limp == JOptionPane.YES_NO_OPTION){
 		DefaultTableModel modelo = (DefaultTableModel) tblSeleccion.getModel();
 		while(modelo.getRowCount()>0){
                     modelo.removeRow(0);
-                
+                  
                  
 		}
-          precioactual = Double.parseDouble(jtxtTotal.getText()) - importe;
-          jtxtTotal.setText(null);  
+                    total = 0;
+                   jtxtTotal.setText(null);
+                  
                
-	}
-        
-                    
+             
+          }
+           
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+	
+            
+           
+                        
     }
 
     /**
@@ -487,7 +498,7 @@ public class Reserva extends javax.swing.JFrame {
     try {
 	String producto, precio, cant, stock, importe;
 	double calculo = 0.0, subt = 0.0;
-	int canti = 1;
+	int canti = 0;
 
 	if(fsel == -1){
 		JOptionPane.showMessageDialog(null, "Debe seleccionar un producto");
@@ -532,7 +543,7 @@ public class Reserva extends javax.swing.JFrame {
                         m = (DefaultTableModel)tblSeleccion.getModel();
                         m.removeRow(fsel);
                         
-                        jtxtTotal.setText(null);
+                  
 		}
                
 	}
