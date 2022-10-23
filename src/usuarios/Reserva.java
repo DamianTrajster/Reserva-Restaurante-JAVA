@@ -2,19 +2,162 @@
 package usuarios;
 
 import Metodos_sql.Metodos_sql;
-
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Reserva extends javax.swing.JFrame {
 
+    //Declaramos e inicializamos las variables para los JTable y Total de los productos
+    DefaultTableModel m;
+    static double total = 0;
+    
+     double precioactual=0.0;
+      double importe=0.0;
 
     public Reserva() {
         initComponents();
         this.setLocationRelativeTo(this);
+        mostrarCarnes();
+        mostrarPastas();
+        mostrarPizzas();
+        mostrarBebidas();
+        mostrarPostres();
+        mostrarMenuDelDia();
+        mostrarPromos();
     }
     
-     Metodos_sql metodos = new Metodos_sql();
-    
+    //Metodo para mostrar los Productos 
+     private void mostrarCarnes(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        String carnes = "carnes";
+        
+	ResultSet rs = Metodos_sql.getTabla("select producto,precio,stock from menu where tipo = '" + carnes + "'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	tblProductos1.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }
      
+    private void mostrarPastas(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        String pastas = "pastas";
+        
+	ResultSet rs = Metodos_sql.getTabla("select producto,precio,stock from menu where tipo = '" + pastas + "'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	tblProductos1.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }
+
+    private void mostrarPizzas(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        String pizzas = "pizzas";
+        
+	ResultSet rs = Metodos_sql.getTabla("select producto,precio,stock from menu where tipo = '" + pizzas + "'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	tblProductos1.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }
+    
+    private void mostrarBebidas(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        String bebidas = "bebidas";
+        
+	ResultSet rs = Metodos_sql.getTabla("select producto,precio,stock from menu where tipo = '" + bebidas + "'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	tblProductos1.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }
+    
+    private void mostrarPostres(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        String postres = "postres";
+        
+	ResultSet rs = Metodos_sql.getTabla("select producto,precio,stock from menu where tipo = '" + postres + "'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	tblProductos1.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }
+    
+    private void mostrarMenuDelDia(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        String menu_del_dia = "menu del dia";
+        
+	ResultSet rs = Metodos_sql.getTabla("select producto,precio,stock from menu where tipo = '" + menu_del_dia + "'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	tblProductos1.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }
+    
+    private void mostrarPromos(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        
+	ResultSet rs = Metodos_sql.getTabla("select m.producto, m.precio, m.stock from menu m inner join promociones p on m.menu_id = p.menu_id");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	tblProductos1.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }
+    
+    //Metodo para cancelar la compra de Productos
+    public void limpiarPanel(){
+        int limp;
+       
+	limp = JOptionPane.showConfirmDialog(null,"¿Está seguro de cancelar la compra?","Advertencia",JOptionPane.YES_NO_OPTION);
+	if(limp == JOptionPane.YES_NO_OPTION){
+		DefaultTableModel modelo = (DefaultTableModel) tblSeleccion.getModel();
+		while(modelo.getRowCount()>0){
+                    modelo.removeRow(0);
+                
+                 
+		}
+          precioactual = Double.parseDouble(jtxtTotal.getText()) - importe;
+          jtxtTotal.setText(null);  
+               
+	}
+        
+                    
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,13 +196,10 @@ public class Reserva extends javax.swing.JFrame {
         tblSeleccion.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
         tblSeleccion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Producro", "Precio", "Cantidad"
+                "Producto", "Precio", "Cantidad", "Importe"
             }
         ));
         tblSeleccion.addContainerListener(new java.awt.event.ContainerAdapter() {
@@ -75,37 +215,79 @@ public class Reserva extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tblSeleccion);
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         btnQuitar.setText("Quitar");
+        btnQuitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitarActionPerformed(evt);
+            }
+        });
 
         jlbImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnCarnes.setText("Carnes");
+        btnCarnes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCarnesActionPerformed(evt);
+            }
+        });
 
         btnPastas.setText("Pastas");
+        btnPastas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPastasActionPerformed(evt);
+            }
+        });
 
         btnPizzas.setText("Pizzas");
+        btnPizzas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPizzasActionPerformed(evt);
+            }
+        });
 
         btnBebidas.setText("Bebidas");
+        btnBebidas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBebidasActionPerformed(evt);
+            }
+        });
 
         btnPostres.setText("Postres");
+        btnPostres.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPostresActionPerformed(evt);
+            }
+        });
 
         btnPromos.setText("Promos");
+        btnPromos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPromosActionPerformed(evt);
+            }
+        });
 
         btnMenuDelDia.setText("Menu del Dia");
+        btnMenuDelDia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuDelDiaActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Cant:");
 
         tblProductos1.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
         tblProductos1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Producro", "Precio", "Stock"
+                "Producto", "Precio", "Stock"
             }
         ));
         tblProductos1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -125,6 +307,11 @@ public class Reserva extends javax.swing.JFrame {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnVolver.setText("Volver");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
@@ -246,17 +433,121 @@ public class Reserva extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         // TODO add your handling code here:
-      /*  Bienvenido bv = new Bienvenido();
-        bv.setVisible(true);*/
+        Bienvenido bv = new Bienvenido();
+        bv.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         // TODO add your handling code here:
-       /* Mesas ms = new Mesas();
-        ms.setVisible(true);*/
+        Mesas ms = new Mesas();
+        ms.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnConfirmarActionPerformed
+
+    private void btnCarnesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarnesActionPerformed
+        // TODO add your handling code here:
+        mostrarCarnes();
+    }//GEN-LAST:event_btnCarnesActionPerformed
+
+    private void btnPastasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPastasActionPerformed
+        // TODO add your handling code here:
+        mostrarPastas();
+    }//GEN-LAST:event_btnPastasActionPerformed
+
+    private void btnPizzasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPizzasActionPerformed
+        // TODO add your handling code here:
+        mostrarPizzas();
+    }//GEN-LAST:event_btnPizzasActionPerformed
+
+    private void btnBebidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBebidasActionPerformed
+        // TODO add your handling code here:
+        mostrarBebidas();
+    }//GEN-LAST:event_btnBebidasActionPerformed
+
+    private void btnPostresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPostresActionPerformed
+        // TODO add your handling code here:
+        mostrarPostres();
+    }//GEN-LAST:event_btnPostresActionPerformed
+
+    private void btnMenuDelDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDelDiaActionPerformed
+        // TODO add your handling code here:
+        mostrarMenuDelDia();
+    }//GEN-LAST:event_btnMenuDelDiaActionPerformed
+
+    private void btnPromosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPromosActionPerformed
+        // TODO add your handling code here:
+        mostrarPromos();
+    }//GEN-LAST:event_btnPromosActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+
+    int fsel = tblProductos1.getSelectedRow();
+    try {
+	String producto, precio, cant, stock, importe;
+	double calculo = 0.0, subt = 0.0;
+	int canti = 1;
+
+	if(fsel == -1){
+		JOptionPane.showMessageDialog(null, "Debe seleccionar un producto");
+	}else{
+		m = (DefaultTableModel) tblProductos1.getModel();
+		producto = tblProductos1.getValueAt(fsel, 0).toString();
+		precio = tblProductos1.getValueAt(fsel, 1).toString();
+		stock = tblProductos1.getValueAt(fsel, 2).toString();
+		cant = jtxtCant.getText();
+		
+		//Realizamos los calculos
+		subt = (Double.parseDouble(precio) * Integer.parseInt(cant));
+		importe = String.valueOf(subt);
+
+		m = (DefaultTableModel) tblSeleccion.getModel();
+		String index[] = {producto,precio,cant,importe};
+		m.addRow(index);
+                
+                calculo = (Double.parseDouble(precio) * Integer.parseInt(jtxtCant.getText()));
+                total = total + calculo;
+                jtxtTotal.setText("" + total);
+	}
+    } catch (Exception e){}
+
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
+        // TODO add your handling code here:
+        double subt = 0.0, importe = 0.0, precioactual = 0.0;
+        int fsel, respuesta;
+        fsel = tblSeleccion.getSelectedRow();
+        try {
+            if(fsel == -1){
+		JOptionPane.showMessageDialog(null, "Debe seleccionar el producto a eliminar");
+            } else{
+		respuesta = JOptionPane.showConfirmDialog(null, "¿Esta seguro de eliminar este producto?","Eliminar",JOptionPane.YES_NO_OPTION);
+		if(respuesta == JOptionPane.YES_NO_OPTION){
+			importe = Double.parseDouble(tblSeleccion.getValueAt(fsel,3).toString());
+			precioactual = Double.parseDouble(jtxtTotal.getText()) - importe;
+			total = precioactual;
+			jtxtTotal.setText("" + total);
+                        m = (DefaultTableModel)tblSeleccion.getModel();
+                        m.removeRow(fsel);
+                        
+                        jtxtTotal.setText(null);
+		}
+               
+	}
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null,"Articulo eliminado");
+        }
+        
+        
+
+    }//GEN-LAST:event_btnQuitarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        limpiarPanel();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments

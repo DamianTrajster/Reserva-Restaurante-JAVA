@@ -1,6 +1,12 @@
 
 package usuarios;
 
+import Metodos_sql.ConexionBD;
+import Metodos_sql.Metodos_sql;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Cartilla extends javax.swing.JFrame {
 
@@ -8,7 +14,96 @@ public class Cartilla extends javax.swing.JFrame {
     public Cartilla() {
         initComponents();
         this.setLocationRelativeTo(this);
+        mostrarCarnes();
+        mostrarPastas();
+        mostrarPizzas();
+        mostrarBebidas();
+        mostrarPostres();
     }
+    //ESTO PUSE NUEVO
+    private void mostrarCarnes(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        String carnes = "carnes";
+        
+	ResultSet rs = Metodos_sql.getTabla("select producto,precio,stock from menu where tipo = '" + carnes + "'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	jTable_Carnes.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }
+    
+    //metodo para mostrar las PASTAS
+    private void mostrarPastas(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        String pastas = "pastas";
+        
+	ResultSet rs = Metodos_sql.getTabla("select producto,precio,stock from menu where tipo = '" + pastas + "'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	jTable_Pastas.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }    
+        
+    //metodo para mostrar las PIZZAS
+    private void mostrarPizzas(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        String pizzas = "pizzas";
+        
+	ResultSet rs = Metodos_sql.getTabla("select producto,precio,stock from menu where tipo = '" + pizzas + "'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	jTable_Pizzas.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }    
+        
+    //metodo para mostrar las BEBIDAS
+    private void mostrarBebidas(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        String bebidas = "bebidas";
+        
+	ResultSet rs = Metodos_sql.getTabla("select producto,precio,stock from menu where tipo = '" + bebidas + "'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	jTable_Bebidas.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }    
+        
+    //metodo para mostrar los POSTRES
+    private void mostrarPostres(){
+	DefaultTableModel modelo = new DefaultTableModel();
+        String postres = "postres";
+        
+	ResultSet rs = Metodos_sql.getTabla("select producto,precio,stock from menu where tipo = '" + postres + "'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto", "Precio", "Stock"});
+	try{
+	while (rs.next()){
+		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock")});
+        }
+	jTable_Postres.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }    
 
     /**
      * This method is called from within the constructor to initialize the form.

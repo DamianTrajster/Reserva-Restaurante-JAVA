@@ -5,10 +5,12 @@
 package Metodos_sql;
 
 
+import static Metodos_sql.ConexionBD.conectar;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import java.sql.Connection;
+import java.sql.Statement;
+
 
 /**
  *
@@ -107,6 +109,18 @@ public class Metodos_sql {
         
         return busqueda_usuario;
     }
+    
+    //metodo para tomar los datos de la tabla Menu
+    public static ResultSet getTabla(String Consulta){
+       Connection conexion = conectar();
+       Statement st;
+       ResultSet datos=null;
+       try{
+           st = conexion.createStatement();
+           datos = st.executeQuery(Consulta);
+       } catch (Exception e){System.out.println(e.toString());}
+       return datos;
+   }
     
     
 
