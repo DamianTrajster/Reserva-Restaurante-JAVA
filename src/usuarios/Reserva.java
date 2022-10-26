@@ -292,6 +292,8 @@ public class Reserva extends javax.swing.JFrame {
 
         jLabel1.setText("Cant:");
 
+        jtxtCant.setText("1");
+
         tblProductos1.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
         tblProductos1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -499,7 +501,7 @@ public class Reserva extends javax.swing.JFrame {
 	String producto, precio, cant, stock, importe;
 	double calculo = 0.0, subt = 0.0;
 	int canti = 0;
-
+        
 	if(fsel == -1){
 		JOptionPane.showMessageDialog(null, "Debe seleccionar un producto");
 	}else{
@@ -508,6 +510,8 @@ public class Reserva extends javax.swing.JFrame {
 		precio = tblProductos1.getValueAt(fsel, 1).toString();
 		stock = tblProductos1.getValueAt(fsel, 2).toString();
 		cant = jtxtCant.getText();
+                
+                
 		
 		//Realizamos los calculos
 		subt = (Double.parseDouble(precio) * Integer.parseInt(cant));

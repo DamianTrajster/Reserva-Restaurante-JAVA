@@ -68,7 +68,7 @@ public class Metodos_sql {
             resultado= sentencia_preparada.executeQuery();
             
             if(resultado.next()){
-                String nombre = resultado.getNString("nombre");
+                String nombre = resultado.getString("nombre");
                 busqueda_nombre = nombre;
             }
             

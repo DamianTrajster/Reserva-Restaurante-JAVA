@@ -19,43 +19,52 @@ public class Mesas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
-        tgbtnMesa3 = new javax.swing.JToggleButton();
-        tgbtnMesa1 = new javax.swing.JToggleButton();
-        tgbtnMesa2 = new javax.swing.JToggleButton();
-        tgbtnMesa9 = new javax.swing.JToggleButton();
-        tgbtnMesa7 = new javax.swing.JToggleButton();
-        tgbtnMesa8 = new javax.swing.JToggleButton();
-        tgbtnMesa6 = new javax.swing.JToggleButton();
-        tgbtnMesa4 = new javax.swing.JToggleButton();
-        tgbtnMesa5 = new javax.swing.JToggleButton();
-        btnCalendar = new javax.swing.JButton();
+        tgbtnMesa3 = new MesasColor();
+        tgbtnMesa1 = new MesasColor();
+        tgbtnMesa2 = new MesasColor();
+        tgbtnMesa9 = new MesasColor();
+        tgbtnMesa7 = new MesasColor();
+        tgbtnMesa8 = new MesasColor();
+        tgbtnMesa6 = new MesasColor();
+        tgbtnMesa4 = new MesasColor();
+        tgbtnMesa5 = new MesasColor();
         btnConfirmar = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
+        Horario = new javax.swing.JComboBox<>();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("MESAS");
 
+        buttonGroup1.add(tgbtnMesa3);
         tgbtnMesa3.setText("Mesa 3");
 
+        buttonGroup1.add(tgbtnMesa1);
         tgbtnMesa1.setText("Mesa 1");
 
+        buttonGroup1.add(tgbtnMesa2);
         tgbtnMesa2.setText("Mesa 2");
 
+        buttonGroup1.add(tgbtnMesa9);
         tgbtnMesa9.setText("Mesa 9");
 
+        buttonGroup1.add(tgbtnMesa7);
         tgbtnMesa7.setText("Mesa 7");
 
+        buttonGroup1.add(tgbtnMesa8);
         tgbtnMesa8.setText("Mesa 8");
 
+        buttonGroup1.add(tgbtnMesa6);
         tgbtnMesa6.setText("Mesa 6");
 
+        buttonGroup1.add(tgbtnMesa4);
         tgbtnMesa4.setText("Mesa 4");
 
+        buttonGroup1.add(tgbtnMesa5);
         tgbtnMesa5.setText("Mesa 5");
-
-        btnCalendar.setText("Día y Hora");
 
         btnConfirmar.setText("Confirmar");
 
@@ -66,16 +75,21 @@ public class Mesas extends javax.swing.JFrame {
             }
         });
 
+        Horario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11:00", "12:00", "13:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(btnConfirmar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnVolver)
+                .addGap(82, 82, 82))
+            .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCalendar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -96,26 +110,28 @@ public class Mesas extends javax.swing.JFrame {
                             .addComponent(tgbtnMesa3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tgbtnMesa6, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tgbtnMesa9, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30))))
+                        .addGap(30, 30, 30))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(111, 111, 111))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(172, 172, 172)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(btnConfirmar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnVolver)
-                .addGap(82, 82, 82))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addGap(45, 45, 45)
-                .addComponent(btnCalendar)
-                .addGap(30, 30, 30)
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tgbtnMesa3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tgbtnMesa2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -142,8 +158,8 @@ public class Mesas extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         // TODO add your handling code here:
-       /* Reserva re = new Reserva();
-        re.setVisible(true);*/
+        Reserva re = new Reserva();
+        re.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
@@ -183,9 +199,11 @@ public class Mesas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCalendar;
+    private javax.swing.JComboBox<String> Horario;
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton btnVolver;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JToggleButton tgbtnMesa1;
     private javax.swing.JToggleButton tgbtnMesa2;
