@@ -81,6 +81,39 @@ public class Metodos_sql {
         return busqueda_nombre;
     }
     
+    
+        //metodo para buscar id
+    public static int buscarId (int userid){
+        
+        int busqueda_id= 0;
+        Connection conexion = null;
+        try {
+            conexion  = ConexionBD.conectar();
+            
+            String sentencia_buscar=("select id from usuarios where id = '" + userid + "'" );
+            
+            sentencia_preparada = conexion.prepareStatement(sentencia_buscar);
+            resultado= sentencia_preparada.executeQuery();
+            
+            if(resultado.next()){
+                int id = resultado.getInt(userid);
+                busqueda_id = id;
+            }
+            
+            conexion.close();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return busqueda_id;
+    }
+    
+    
+    
+    
+    
+    
     //metodo para ver si estoy registrado
     public static String buscarUsuarioRegistrado(String user, String contreseña){
         String busqueda_usuario = null;
@@ -89,7 +122,7 @@ public class Metodos_sql {
         
         try {
             conexion = ConexionBD.conectar();
-            String sentencia_buscar_usuario = ("select nombre, user,contraseña from usuarios  where user ='" +user+ "' && contraseña= '" + contreseña + "'" );
+            String sentencia_buscar_usuario = ("select id, nombre, user,contraseña from usuarios  where user ='" +user+ "' && contraseña= '" + contreseña + "'" );
             sentencia_preparada= conexion.prepareStatement(sentencia_buscar_usuario);
             
             resultado = sentencia_preparada.executeQuery();
@@ -121,6 +154,33 @@ public class Metodos_sql {
        } catch (Exception e){System.out.println(e.toString());}
        return datos;
    }
+    
+    //guardar facturas
+     public int guardarFacturas(int menu_id, int usuarios_id) {
+       int resultado = 0;
+       Connection conexion = null;
+       
+       String sentencia_guardar = ("insert into facturas(menu_id, usuarios_id)values (?,?)");
+       
+        try {
+            conexion = ConexionBD.conectar();
+            
+            sentencia_preparada = conexion.prepareStatement(sentencia_guardar);
+            
+           
+            sentencia_preparada.setInt(1, menu_id);
+            sentencia_preparada.setInt(2,usuarios_id);
+ 
+            
+            resultado = sentencia_preparada.executeUpdate();
+            
+               conexion.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+       
+        return resultado;
+    }
     
     
 

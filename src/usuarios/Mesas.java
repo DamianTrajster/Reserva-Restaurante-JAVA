@@ -1,6 +1,18 @@
 
 package usuarios;
 
+import Metodos_sql.ConexionBD;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
+
 
 public class Mesas extends javax.swing.JFrame {
 
@@ -8,6 +20,8 @@ public class Mesas extends javax.swing.JFrame {
     public Mesas() {
         initComponents();
         this.setLocationRelativeTo(this);
+        botones();
+        buscarMesasReservadas();
     }
 
     /**
@@ -21,50 +35,19 @@ public class Mesas extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
-        tgbtnMesa3 = new MesasColor();
-        tgbtnMesa1 = new MesasColor();
-        tgbtnMesa2 = new MesasColor();
-        tgbtnMesa9 = new MesasColor();
-        tgbtnMesa7 = new MesasColor();
-        tgbtnMesa8 = new MesasColor();
-        tgbtnMesa6 = new MesasColor();
-        tgbtnMesa4 = new MesasColor();
-        tgbtnMesa5 = new MesasColor();
         btnConfirmar = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
         Horario = new javax.swing.JComboBox<>();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        pnlBotones = new javax.swing.JPanel();
+        Dias = new javax.swing.JComboBox<>();
+        Meses = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("MESAS");
-
-        buttonGroup1.add(tgbtnMesa3);
-        tgbtnMesa3.setText("Mesa 3");
-
-        buttonGroup1.add(tgbtnMesa1);
-        tgbtnMesa1.setText("Mesa 1");
-
-        buttonGroup1.add(tgbtnMesa2);
-        tgbtnMesa2.setText("Mesa 2");
-
-        buttonGroup1.add(tgbtnMesa9);
-        tgbtnMesa9.setText("Mesa 9");
-
-        buttonGroup1.add(tgbtnMesa7);
-        tgbtnMesa7.setText("Mesa 7");
-
-        buttonGroup1.add(tgbtnMesa8);
-        tgbtnMesa8.setText("Mesa 8");
-
-        buttonGroup1.add(tgbtnMesa6);
-        tgbtnMesa6.setText("Mesa 6");
-
-        buttonGroup1.add(tgbtnMesa4);
-        tgbtnMesa4.setText("Mesa 4");
-
-        buttonGroup1.add(tgbtnMesa5);
-        tgbtnMesa5.setText("Mesa 5");
 
         btnConfirmar.setText("Confirmar");
 
@@ -77,6 +60,29 @@ public class Mesas extends javax.swing.JFrame {
 
         Horario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11:00", "12:00", "13:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00" }));
 
+        pnlBotones.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout pnlBotonesLayout = new javax.swing.GroupLayout(pnlBotones);
+        pnlBotones.setLayout(pnlBotonesLayout);
+        pnlBotonesLayout.setHorizontalGroup(
+            pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 404, Short.MAX_VALUE)
+        );
+        pnlBotonesLayout.setVerticalGroup(
+            pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 324, Short.MAX_VALUE)
+        );
+
+        Dias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+
+        Meses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
+
+        jLabel2.setText("Día");
+
+        jLabel3.setText("Mes");
+
+        jLabel4.setText("Hora");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,65 +94,51 @@ public class Mesas extends javax.swing.JFrame {
                 .addComponent(btnVolver)
                 .addGap(82, 82, 82))
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(Dias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Meses, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(80, 80, 80))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(tgbtnMesa1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(42, 42, 42)
-                                .addComponent(tgbtnMesa2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(tgbtnMesa7, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(42, 42, 42)
-                                    .addComponent(tgbtnMesa8, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(tgbtnMesa4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(42, 42, 42)
-                                    .addComponent(tgbtnMesa5, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addGap(165, 165, 165)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tgbtnMesa3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tgbtnMesa6, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tgbtnMesa9, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(111, 111, 111))))
+                            .addComponent(jLabel4)
+                            .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22)))
+                .addContainerGap(17, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(172, 172, 172)
+                .addGap(183, 183, 183)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tgbtnMesa3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tgbtnMesa2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tgbtnMesa1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Dias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Meses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tgbtnMesa6, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tgbtnMesa5, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tgbtnMesa4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tgbtnMesa7, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tgbtnMesa8, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tgbtnMesa9, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConfirmar)
                     .addComponent(btnVolver))
@@ -161,8 +153,149 @@ public class Mesas extends javax.swing.JFrame {
         Reserva re = new Reserva();
         re.setVisible(true);
         this.dispose();
+       
     }//GEN-LAST:event_btnVolverActionPerformed
 
+    //conectar con la base de datos 
+   ConexionBD cc= new ConexionBD();
+   Connection con=cc.conectar();
+   
+   int filas = 3;
+   int columnas = 3;
+   int largoBoton = 95;
+   int anchoBoton = 95;
+   int ejex = 20;
+   int ejey = 20;
+   
+   public JToggleButton [][] JTBotones = new JToggleButton[filas][columnas];
+   
+   //public static Connection conexion;
+   public static PreparedStatement sentenciaPreparada;
+   public static ResultSet resultado;
+    
+   
+    //METODO PARA EL DISEÑO DE LOS BOTONES
+   public void botones(){
+       Font fuenteLetra = new Font("Arial",Font.BOLD,12);
+       int contadorMesas = 1;
+       JTBotones = new JToggleButton[filas][columnas];
+       for (int i = 0; i < filas; i++) {
+           for (int j = 0; j < columnas; j++) {
+               JTBotones[i][j] = new JToggleButton();
+               JTBotones[i][j].setBounds(ejex, ejey, largoBoton, anchoBoton);
+               JTBotones[i][j].setText("Mesa " + contadorMesas);
+               JTBotones[i][j].setFont(fuenteLetra);
+               JTBotones[i][j].setBackground(new Color(38, 197, 43));
+               
+               AccionBotones accion = new AccionBotones();
+               JTBotones[i][j].addActionListener(accion);
+               
+               pnlBotones.add(JTBotones[i][j]);
+               
+               contadorMesas++;
+               ejex += 130;
+           }
+           ejex = 20; // posicion inicial
+           ejey += 100; // separacion de los btn
+       }
+   }
+   
+   //METODO PARA RESERVAR MESA
+    public void reservarMesa(int numero){
+	try{
+		con = ConexionBD.conectar();
+		String consulta = "UPDATE mesas SET reservado = 'si' WHERE numero = " + numero;
+		sentenciaPreparada = con.prepareStatement(consulta);
+		int mensaje = sentenciaPreparada.executeUpdate();
+		
+		if(mensaje > 0){
+			JOptionPane.showMessageDialog(null, "Mesa reservada");
+		} else JOptionPane.showMessageDialog(null, "Error al actualizar el estado de la Mesa");
+	}catch (Exception e){
+		System.out.println("Error: " + e);
+	}
+}
+
+    //METODO PARA QUITAR MESA
+    public void quitarMesa(int numero){
+	try{
+		con = ConexionBD.conectar();
+		String consulta = "UPDATE mesas SET reservado = 'no' WHERE numero = "+ numero;
+		sentenciaPreparada = con.prepareStatement(consulta);
+		int mensaje = sentenciaPreparada.executeUpdate();
+		
+		if(mensaje > 0){
+			JOptionPane.showMessageDialog(null, "Se ha liberado la Mesa");
+		} else JOptionPane.showMessageDialog(null, "Error al actualizar el estado de la Mesa");
+	}catch (Exception e){
+		System.out.println("Error: " + e);
+	}
+}
+    
+    //METODO PARA BUSCAR MESAS RESERVADAS
+    public void buscarMesasReservadas(){
+        
+        try {
+            con = ConexionBD.conectar();
+            String consulta = "SELECT numero, reservado FROM mesas";
+            sentenciaPreparada = con.prepareStatement(consulta);
+            resultado = sentenciaPreparada.executeQuery();
+            int numero;
+            String reservado;
+            
+            while(resultado.next()){
+                numero = resultado.getInt("numero");
+                reservado = resultado.getString("reservado");
+                
+                for (int i = 0; i < filas; i++) {
+                    for (int j = 0; j < columnas; j++) {
+                        
+                        if (JTBotones[i][j].getText().length() == 6) {
+                            String numeroLetra = JTBotones[i][j].getText().charAt(5)+"";
+                            int numeroN = Integer.parseInt(numeroLetra);
+                            if ((numero == numeroN)&&(reservado.equals("si"))) {
+                                JTBotones[i][j].setBackground(Color.RED);
+                                JTBotones[i][j].setSelected(true);
+                            }
+                        }
+                    }
+                }
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error: " + e);
+        }
+    }
+    
+    public class AccionBotones implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
+                    if (ae.getSource().equals(JTBotones[i][j])) {
+                        if (JTBotones[i][j].isSelected()) {
+                            JTBotones[i][j].setBackground(Color.RED);
+                            if (JTBotones[i][j].getText().length() == 6) {
+                                String numeroLetra = JTBotones[i][j].getText().charAt(5)+"";
+                                int numero = Integer.parseInt(numeroLetra);
+                                reservarMesa(numero);
+                            }
+                        }else{
+                            JTBotones[i][j].setBackground(new Color(38, 197, 43));
+                            if (JTBotones[i][j].getText().length() == 6) {
+                                String numeroLetra = JTBotones[i][j].getText().charAt(5)+"";
+                                int numero = Integer.parseInt(numeroLetra);
+                                quitarMesa(numero);
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -199,20 +332,16 @@ public class Mesas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> Dias;
     private javax.swing.JComboBox<String> Horario;
+    private javax.swing.JComboBox<String> Meses;
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton btnVolver;
     private javax.swing.ButtonGroup buttonGroup1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JToggleButton tgbtnMesa1;
-    private javax.swing.JToggleButton tgbtnMesa2;
-    private javax.swing.JToggleButton tgbtnMesa3;
-    private javax.swing.JToggleButton tgbtnMesa4;
-    private javax.swing.JToggleButton tgbtnMesa5;
-    private javax.swing.JToggleButton tgbtnMesa6;
-    private javax.swing.JToggleButton tgbtnMesa7;
-    private javax.swing.JToggleButton tgbtnMesa8;
-    private javax.swing.JToggleButton tgbtnMesa9;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel pnlBotones;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,7 +1,10 @@
 
 package usuarios;
 
+import Metodos_sql.ConexionBD;
 import Metodos_sql.Metodos_sql;
+import static Metodos_sql.Metodos_sql.sentencia_preparada;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -26,6 +29,8 @@ public class Reserva extends javax.swing.JFrame {
         mostrarMenuDelDia();
         mostrarPromos();
     }
+    
+       Metodos_sql metodos = new Metodos_sql();
     
     //Metodo para mostrar los Productos 
      private void mostrarCarnes(){
@@ -169,6 +174,33 @@ public class Reserva extends javax.swing.JFrame {
            
                         
     }
+    
+     public int guardarFacturas(int menu_id, int usuarios_id) {
+       int resultado = 0;
+       Connection conexion = null;
+       
+       String sentencia_guardar = ("insert into facturas(menu_id, usuarios_id)values (?,?)");
+       
+        try {
+            conexion = ConexionBD.conectar();
+            
+            sentencia_preparada = conexion.prepareStatement(sentencia_guardar);
+            
+           
+            sentencia_preparada.setInt(1, menu_id);
+            sentencia_preparada.setInt(2,usuarios_id);
+ 
+            
+            resultado = sentencia_preparada.executeUpdate();
+            
+               conexion.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+       
+        return resultado;
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -456,6 +488,15 @@ public class Reserva extends javax.swing.JFrame {
         Mesas ms = new Mesas();
         ms.setVisible(true);
         this.dispose();
+        
+        
+        
+        
+       
+        
+        
+        
+        
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void btnCarnesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarnesActionPerformed
@@ -511,7 +552,7 @@ public class Reserva extends javax.swing.JFrame {
 		stock = tblProductos1.getValueAt(fsel, 2).toString();
 		cant = jtxtCant.getText();
                 
-                
+            
 		
 		//Realizamos los calculos
 		subt = (Double.parseDouble(precio) * Integer.parseInt(cant));
@@ -521,9 +562,13 @@ public class Reserva extends javax.swing.JFrame {
 		String index[] = {producto,precio,cant,importe};
 		m.addRow(index);
                 
+                int stockresta = Integer.parseInt(stock) - 1;
+                
+                
                 calculo = (Double.parseDouble(precio) * Integer.parseInt(jtxtCant.getText()));
                 total = total + calculo;
                 jtxtTotal.setText("" + total);
+                
 	}
     } catch (Exception e){}
 
