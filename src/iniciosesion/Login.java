@@ -8,6 +8,7 @@ import Metodos_sql.Metodos_sql;
 import empleados.BienvenidoEmpleado;
 import javax.swing.JOptionPane;
 import usuarios.Bienvenido;
+import usuarios.Reserva;
 
 /**
  *
@@ -206,11 +207,24 @@ public class Login extends javax.swing.JFrame {
               this.dispose();
         }else if(busqueda_usuario.equals("usuario encontrado")) {
             String busqueda_nombre = metodos.buscarNombre(txtUsuario.getText());
-               JOptionPane.showMessageDialog(this, "Bienvenido/a " + busqueda_nombre );
-               Bienvenido ventana = new Bienvenido();
-               ventana.lblNombre.setText(busqueda_nombre);
-                ventana.setVisible(true);
-               this.dispose();
+            int  busqueda_id = metodos.buscarId(txtUsuario.getText());
+            String buscarid = String.valueOf(busqueda_id);
+            JOptionPane.showMessageDialog(this, "Bienvenido/a " + busqueda_nombre );
+            Bienvenido ventana = new Bienvenido();
+            ventana.lblNombre.setText(busqueda_nombre);
+            //ventana.lblid.setText(buscarid);
+            ventana.setVisible(true);
+            this.dispose();
+            
+             
+             //Reserva reserva = new Reserva();
+             //reserva.jLabelnombre.setText(busqueda_nombre);
+             //reserva.jLabelid.setText(buscarid);
+             
+            
+             
+            
+            
         }else {
              JOptionPane.showMessageDialog(this, "usuario no registrado, por favor darse de alta");
         }
@@ -276,7 +290,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPasswordField txtContraseña;
+    public javax.swing.JPasswordField txtContraseña;
     public javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

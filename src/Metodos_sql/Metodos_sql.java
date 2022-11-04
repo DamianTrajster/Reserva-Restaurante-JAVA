@@ -55,7 +55,7 @@ public class Metodos_sql {
     }
     
     //metodo para buscar el nombre
-    public static String buscarNombre (String user){
+    public  String buscarNombre (String user){
         
         String busqueda_nombre = null;
         Connection conexion = null;
@@ -70,7 +70,10 @@ public class Metodos_sql {
             if(resultado.next()){
                 String nombre = resultado.getString("nombre");
                 busqueda_nombre = nombre;
+               
             }
+            
+             
             
             conexion.close();
             
@@ -83,22 +86,24 @@ public class Metodos_sql {
     
     
         //metodo para buscar id
-    public static int buscarId (int userid){
+    public  int buscarId (String user){
         
         int busqueda_id= 0;
         Connection conexion = null;
         try {
             conexion  = ConexionBD.conectar();
             
-            String sentencia_buscar=("select id from usuarios where id = '" + userid + "'" );
+            String sentencia_buscar=("select id  from usuarios where user = '" + user + "'" );
             
             sentencia_preparada = conexion.prepareStatement(sentencia_buscar);
             resultado= sentencia_preparada.executeQuery();
             
             if(resultado.next()){
-                int id = resultado.getInt(userid);
-                busqueda_id = id;
+               busqueda_id = resultado.getInt(1);
+              
             }
+            
+        
             
             conexion.close();
             
@@ -115,7 +120,7 @@ public class Metodos_sql {
     
     
     //metodo para ver si estoy registrado
-    public static String buscarUsuarioRegistrado(String user, String contreseña){
+    public  String buscarUsuarioRegistrado(String user, String contreseña){
         String busqueda_usuario = null;
         
         Connection conexion = null;
@@ -181,6 +186,10 @@ public class Metodos_sql {
        
         return resultado;
     }
+     
+     
+
+     
     
     
 
