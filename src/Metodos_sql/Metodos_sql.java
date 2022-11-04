@@ -55,7 +55,7 @@ public class Metodos_sql {
     }
     
     //metodo para buscar el nombre
-    public  String buscarNombre (String user){
+    public static  String buscarNombre (String user){
         
         String busqueda_nombre = null;
         Connection conexion = null;
@@ -86,7 +86,7 @@ public class Metodos_sql {
     
     
         //metodo para buscar id
-    public  int buscarId (String user){
+    public static int buscarId (String user){
         
         int busqueda_id= 0;
         Connection conexion = null;
@@ -120,7 +120,7 @@ public class Metodos_sql {
     
     
     //metodo para ver si estoy registrado
-    public  String buscarUsuarioRegistrado(String user, String contreseña){
+    public static  String buscarUsuarioRegistrado(String user, String contreseña){
         String busqueda_usuario = null;
         
         Connection conexion = null;

@@ -14,6 +14,7 @@ public class Bienvenido extends javax.swing.JFrame {
     }
     
 Metodos_sql metodos = new Metodos_sql();
+   String user;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -141,9 +142,18 @@ Metodos_sql metodos = new Metodos_sql();
 
     private void btnReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservaActionPerformed
         // TODO add your handling code here:
-           
-            //String busqueda_nombre = metodos.buscarNombre(lblNombre.getText());
+            user = Login.user;
+            
+            //captura el nombre
+            String busqueda_nombre = metodos.buscarNombre(user);
+            
+            //caputura id
+             int  busqueda_id = metodos.buscarId(user);
+             String buscarid = String.valueOf(busqueda_id);
+            
             Reserva re = new Reserva();
+            re.jLabelnombre.setText(busqueda_nombre);
+            re.jLabelid.setText(buscarid);
             
             re.setVisible(true);
             this.dispose();

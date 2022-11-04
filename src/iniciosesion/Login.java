@@ -26,6 +26,9 @@ public class Login extends javax.swing.JFrame {
     }
     
      Metodos_sql metodos = new Metodos_sql();
+      public static String user = "";
+      public static String id = "";
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -197,7 +200,11 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-      String busqueda_usuario =  metodos.buscarUsuarioRegistrado(txtUsuario.getText(), txtContraseña.getText());
+      
+         user = txtUsuario.getText();
+        
+        
+        String busqueda_usuario =  metodos.buscarUsuarioRegistrado(user, txtContraseña.getText());
         
         if(txtUsuario.getText().equals("admin") && txtContraseña.getText().equals("admin")  ){
             JOptionPane.showMessageDialog(this, "Bienvenido iniciaste session como administrador ");
@@ -212,14 +219,11 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Bienvenido/a " + busqueda_nombre );
             Bienvenido ventana = new Bienvenido();
             ventana.lblNombre.setText(busqueda_nombre);
-            //ventana.lblid.setText(buscarid);
             ventana.setVisible(true);
             this.dispose();
             
              
-             //Reserva reserva = new Reserva();
-             //reserva.jLabelnombre.setText(busqueda_nombre);
-             //reserva.jLabelid.setText(buscarid);
+            
              
             
              

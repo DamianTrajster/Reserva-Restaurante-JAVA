@@ -5,6 +5,7 @@ import Metodos_sql.Metodos_sql;
 import java.awt.Color;
 import java.awt.Component;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JComboBox;
@@ -238,8 +239,42 @@ public class Reserva extends javax.swing.JFrame {
                 
     }
            
+    
+    //Metodo agregar mesa / usuario y productos a la db
+  /*  public void  agregarTodo() {
+         int fsel = tblSeleccion.getSelectedRow();
+        String menuid = tblSeleccion.getValueAt(fsel, 4).toString();
+        int menu_id= Integer.parseInt(menuid);
+        
+        String usuarioid = jLabelid.getText();
+        int usuario_id= Integer.parseInt(usuarioid);
+        
+        
+        String MesaElegida = lblMesaElegida.getText();
+        int mesa_id = Integer.parseInt(MesaElegida);
+        
+        
+        Connection conexion = null;
+        String sentencia_guardar = "insert into reservas (id,usuarios_id,mesas_id, menu_id) values(null,'"+ usuario_id +"','"+ mesa_id  +"','" + menu_id  + "')";
+        
+        
+          try {
+
+                              conexion = ConexionBD.conectar();
+                              Statement st = conexion.createStatement();
+                              st.executeUpdate(sentencia_guardar);
+                                  
+                              
+                                
+                            
+                          } catch (Exception e) {
+                               System.out.println(e.getMessage());
+                              
+                         }
+        
+    }
      
-           
+         */  
      
 
 
@@ -373,6 +408,11 @@ public class Reserva extends javax.swing.JFrame {
         Horario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11:00", "12:00", "13:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00" }));
 
         jButton1.setText("CONFIRMAR");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabelnombre.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -396,6 +436,7 @@ public class Reserva extends javax.swing.JFrame {
             }
         });
 
+        lblMesaElegida.setText("1");
         lblMesaElegida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         cmbTipo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -515,7 +556,6 @@ public class Reserva extends javax.swing.JFrame {
                             .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnVerCartilla, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -548,8 +588,8 @@ public class Reserva extends javax.swing.JFrame {
                             .addComponent(Meses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(38, 38, 38)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnConfirmar, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblMesaElegida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -746,6 +786,11 @@ public class Reserva extends javax.swing.JFrame {
         // TODO add your handling code here:
         mostrarDatos();
     }//GEN-LAST:event_btnResetActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        //agregarTodo();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
