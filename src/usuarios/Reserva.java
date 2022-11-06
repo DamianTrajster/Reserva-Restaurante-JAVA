@@ -19,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -282,45 +283,48 @@ public class Reserva extends javax.swing.JFrame {
         }
                 
     }
+    
+    
+    public void confirmarVenta(){
+	int fsel = tblSeleccion.getSelectedRow();
+	String fecha = ((JTextField)Calendario.getDateEditor().getUiComponent()).getText();
+	String subtotal = tblSeleccion.getValueAt(fsel, 3).toString();
+        String mesaid = lblMesaElegida.getText();
+        String usuarioid = jLabelid.getText();
+        String cantidad = tblSeleccion.getValueAt(fsel, 2).toString();
+        String horario = Horario.getSelectedItem().toString();
+        int ventaref = 0;
+        
+	Connection conexion = null;
+        String sql = "SELECT * FROM venta ORDER BY idventa DESC LIMIT 1";
+        String sentencia_guardar = "";
+        
+        if (sql.isEmpty()) {
+            ventaref = 1;
+        }else if (usuarioid.equals(sql) && fecha.equals(sql) && horario.equals(sql)) {
+             sentencia_guardar = "insert into venta (idventa,fecha,subtotal, mesas_id,usuarios_id,horario,cantidad,ventaref) values(null,'"+ fecha +"','"+ subtotal +"','"+ mesaid +"','"+ usuarioid+"','"+ horario+"','"+ cantidad+"','"+ ventaref+"')";
+        } else {
+           ventaref = 1 + 1;
+           sentencia_guardar = "insert into venta (idventa,fecha,subtotal, mesas_id,usuarios_id,horario,cantidad,ventaref) values(null,'"+ fecha +"','"+ subtotal +"','"+ mesaid +"','"+ usuarioid+"','"+ horario+"','"+ cantidad+"','"+ ventaref +"')";
+            
+        }
+	
+
+	try {
+                    
+             conexion = ConexionBD.conectar();
+             Statement st = conexion.createStatement();
+             st.executeQuery(sql);
+             st.executeUpdate(sentencia_guardar);  
+             
+             JOptionPane.showMessageDialog(null, "Plato agregado!!, ingrese los demás o por favor emita el ticket.");
+             } catch (Exception e) {
+             System.out.println(e.getMessage());  
+             }
+}
            
     
-    //Metodo agregar mesa / usuario y productos a la db
-  /*  public void  agregarTodo() {
-         int fsel = tblSeleccion.getSelectedRow();
-        String menuid = tblSeleccion.getValueAt(fsel, 4).toString();
-        int menu_id= Integer.parseInt(menuid);
-        
-        String usuarioid = jLabelid.getText();
-        int usuario_id= Integer.parseInt(usuarioid);
-        
-        
-        String MesaElegida = lblMesaElegida.getText();
-        int mesa_id = Integer.parseInt(MesaElegida);
-        
-        
-        Connection conexion = null;
-        String sentencia_guardar = "insert into reservas (id,usuarios_id,mesas_id, menu_id) values(null,'"+ usuario_id +"','"+ mesa_id  +"','" + menu_id  + "')";
-        
-        
-          try {
-
-                              conexion = ConexionBD.conectar();
-                              Statement st = conexion.createStatement();
-                              st.executeUpdate(sentencia_guardar);
-                                  
-                              
-                                
-                            
-                          } catch (Exception e) {
-                               System.out.println(e.getMessage());
-                              
-                         }
-        
-    }
-     
-         */  
-     
-
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -346,8 +350,6 @@ public class Reserva extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        Dias = new javax.swing.JComboBox<>();
-        Meses = new javax.swing.JComboBox<>();
         Horario = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jLabelnombre = new javax.swing.JLabel();
@@ -359,6 +361,7 @@ public class Reserva extends javax.swing.JFrame {
         btnBuscarTipo = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
         jLabelid = new javax.swing.JLabel();
+        Calendario = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -445,10 +448,6 @@ public class Reserva extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial Narrow", 1, 24)); // NOI18N
         jLabel3.setText("RESERVA");
 
-        Dias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-
-        Meses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
-
         Horario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11:00", "12:00", "13:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00" }));
 
         jButton1.setText("CONFIRMAR");
@@ -508,6 +507,8 @@ public class Reserva extends javax.swing.JFrame {
             }
         });
 
+        Calendario.setDateFormatString("yyyy-MM-dd");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -560,10 +561,9 @@ public class Reserva extends javax.swing.JFrame {
                                                 .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(24, 24, 24))
                                             .addGroup(layout.createSequentialGroup()
-                                                .addComponent(Dias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(Meses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGap(11, 11, 11)
+                                                .addComponent(Calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(33, 33, 33)
                                                 .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(btnConfirmar)
@@ -628,10 +628,9 @@ public class Reserva extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(Dias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(Meses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(38, 38, 38)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -657,16 +656,7 @@ public class Reserva extends javax.swing.JFrame {
 
     private void tblProductos1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductos1MouseClicked
         // TODO add your handling code here:
-    
-           MostrarImagen();
-   
-    
-        
-      
-        
-        
-       
-        
+            MostrarImagen();    
     }//GEN-LAST:event_tblProductos1MouseClicked
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
@@ -841,7 +831,7 @@ public class Reserva extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        //agregarTodo();
+        confirmarVenta();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -880,9 +870,8 @@ public class Reserva extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> Dias;
+    private com.toedter.calendar.JDateChooser Calendario;
     private javax.swing.JComboBox<String> Horario;
-    private javax.swing.JComboBox<String> Meses;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscarTipo;
     private javax.swing.JButton btnCancelar;
