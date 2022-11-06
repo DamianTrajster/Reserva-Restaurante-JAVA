@@ -4,6 +4,7 @@
  */
 package empleados;
 
+import acercade.nosotros;
 import iniciosesion.Login;
 
 /**
@@ -33,6 +34,7 @@ public class BienvenidoEmpleado extends javax.swing.JFrame {
         btnProductos = new javax.swing.JButton();
         btnReservas = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        acercadeempleados = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,10 +55,17 @@ public class BienvenidoEmpleado extends javax.swing.JFrame {
             }
         });
 
-        btnSalir.setText("salir");
+        btnSalir.setText("SALIR");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
+            }
+        });
+
+        acercadeempleados.setText("Acerca de");
+        acercadeempleados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acercadeempleadosActionPerformed(evt);
             }
         });
 
@@ -65,31 +74,41 @@ public class BienvenidoEmpleado extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnSalir)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(82, 82, 82)
-                        .addComponent(jLabel1)))
-                .addContainerGap(69, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnProductos)
-                    .addComponent(btnReservas))
-                .addGap(151, 151, 151))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(82, 82, 82)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(26, 26, 26)
+                                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel1)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(140, 140, 140)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 63, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(acercadeempleados)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(jLabel1)
-                .addGap(66, 66, 66)
-                .addComponent(btnProductos)
-                .addGap(34, 34, 34)
-                .addComponent(btnReservas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
-                .addComponent(btnSalir)
-                .addGap(37, 37, 37))
+                .addGap(46, 46, 46)
+                .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnReservas, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
+                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(acercadeempleados)
+                .addGap(12, 12, 12))
         );
 
         pack();
@@ -112,6 +131,14 @@ public class BienvenidoEmpleado extends javax.swing.JFrame {
        v.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_btnProductosActionPerformed
+
+    private void acercadeempleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acercadeempleadosActionPerformed
+        // TODO add your handling code here:
+        
+         nosotros ac = new nosotros();
+        ac.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_acercadeempleadosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -149,6 +176,7 @@ public class BienvenidoEmpleado extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton acercadeempleados;
     private javax.swing.JButton btnProductos;
     private javax.swing.JButton btnReservas;
     private javax.swing.JButton btnSalir;
