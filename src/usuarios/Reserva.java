@@ -915,7 +915,7 @@ public class Reserva extends javax.swing.JFrame {
     int Seleccionada = tblSeleccion.getSelectedRow(); 
         
         try {
-          if(Seleccionada != 0){
+          if(Seleccionada == -1){
               JOptionPane.showMessageDialog(null, "Seleccione un plato para confirmar");
         }else {
             confirmarVenta();
