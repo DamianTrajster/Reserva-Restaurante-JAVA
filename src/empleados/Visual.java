@@ -333,6 +333,8 @@ public class Visual extends javax.swing.JFrame {
         
         this.agregar(nombre, precio, stock,tipo, ruta);
         t.visualizar_ProductoVO(tabla);
+         JOptionPane.showMessageDialog(this,"producto agregado con exito");   
+        
          }
        
         

@@ -115,7 +115,9 @@ public class BienvenidoEmpleado extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservasActionPerformed
-      
+        ListaReservas lr = new ListaReservas();
+        lr.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnReservasActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed

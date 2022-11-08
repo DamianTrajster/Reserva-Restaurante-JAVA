@@ -27,11 +27,11 @@ public class Metodos_sql {
     
     
     //Metodo para guardar el usuario en la Base de datos
-    public int guardar(String nombre, String user, String contraseña, String correo) {
+    public int guardar(String nombre, String user, String password, String correo) {
        int resultado = 0;
        Connection conexion = null;
        
-       String sentencia_guardar = ("insert into usuarios(nombre,user,contraseña,correo)values (?,?,?,?)");
+       String sentencia_guardar = ("insert into usuarios(nombre,user,password,correo)values (?,?,?,?)");
        
         try {
             conexion = ConexionBD.conectar();
@@ -41,7 +41,7 @@ public class Metodos_sql {
            
             sentencia_preparada.setString(1, nombre);
             sentencia_preparada.setString(2, user);
-            sentencia_preparada.setString(3, contraseña);
+            sentencia_preparada.setString(3, password);
             sentencia_preparada.setString(4, correo);
             
             resultado = sentencia_preparada.executeUpdate();
@@ -120,14 +120,14 @@ public class Metodos_sql {
     
     
     //metodo para ver si estoy registrado
-    public static  String buscarUsuarioRegistrado(String user, String contreseña){
+    public static  String buscarUsuarioRegistrado(String user, String password){
         String busqueda_usuario = null;
         
         Connection conexion = null;
         
         try {
             conexion = ConexionBD.conectar();
-            String sentencia_buscar_usuario = ("select id, nombre, user,contraseña from usuarios  where user ='" +user+ "' && contraseña= '" + contreseña + "'" );
+            String sentencia_buscar_usuario = ("select id, nombre, user,password from usuarios  where user ='" +user+ "' && password= '" + password + "'" );
             sentencia_preparada= conexion.prepareStatement(sentencia_buscar_usuario);
             
             resultado = sentencia_preparada.executeQuery();

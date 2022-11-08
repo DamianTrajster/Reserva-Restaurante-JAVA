@@ -72,7 +72,8 @@ public class ProductoDAO{
 /*Metodo Modificar*/
     public void Modificar_ProductoVO(ProductoVO vo){
         Conectar conec = new Conectar();
-        String sql = "UPDATE menu SET producto = ?, precio = ?, stock = ?,tipo = ? , foto = ?\n" +
+        //si quiero modificar agregar el campo foto=?
+        String sql = "UPDATE menu SET producto = ?, precio = ?, stock = ?,tipo = ?,foto=? \n" +
 "WHERE menu_id = ?;";
         PreparedStatement ps = null;
         try{
