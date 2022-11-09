@@ -28,6 +28,26 @@ import javax.swing.table.TableCellRenderer;
 import static usuarios.Mesas.sentenciaPreparada;
 
 
+//IMPORTS DE ITEXT PDF
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+
+
+
+
+import java.io.FileOutputStream;
+
+
+
+
+
 public class Reserva extends javax.swing.JFrame {
 
     //Declaramos e inicializamos las variables para los JTable y Total de los productos
@@ -589,6 +609,11 @@ public class Reserva extends javax.swing.JFrame {
         jtxtComensales.setText("1");
 
         jButton2.setText("TICKET");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         tblMesas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -938,6 +963,248 @@ public class Reserva extends javax.swing.JFrame {
         liberarMesa();
         mostrarMesas();
     }//GEN-LAST:event_btnQuitarMesaActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        
+        Document documento = new Document();
+        
+        String usuarioid = jLabelid.getText();
+        
+        
+        try {
+            String ruta = System.getProperty("user.home");
+            PdfWriter.getInstance(documento,new  FileOutputStream(ruta + "/Desktop/" + jLabelnombre.getText().trim() + ".pdf" ));
+            
+            com.itextpdf.text.Image header =  com.itextpdf.text.Image.getInstance("src/imagenes/bannerPDF.jpg");
+            header.scaleToFit(650,1000);
+            header.setAlignment(Chunk.ALIGN_CENTER);
+            
+            
+            //clientes
+            
+            Paragraph parrafo = new Paragraph();
+            parrafo.setAlignment(Paragraph.ALIGN_CENTER);
+            parrafo.add("Informacion del Cliente. \n \n");
+            parrafo.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY ));
+            
+            documento.open();
+            documento.add(header);
+            documento.add(parrafo);
+            
+            PdfPTable tablaCliente = new PdfPTable(3);
+            
+            tablaCliente.addCell("ID");
+            tablaCliente.addCell("nombre");
+            tablaCliente.addCell("correo");
+            
+        
+           
+            
+            try {
+              Connection conexion = null;
+              conexion = ConexionBD.conectar();
+              PreparedStatement pst = conexion.prepareStatement("select id,nombre,correo from usuarios where id = '" + usuarioid + "' ");
+              ResultSet rs = pst.executeQuery();
+              
+              if(rs.next()) {
+                  do{
+                      tablaCliente.addCell(rs.getString(1));
+                      tablaCliente.addCell(rs.getString(2));
+                      tablaCliente.addCell(rs.getString(3));
+                  } while(rs.next());
+                  
+                  documento.add(tablaCliente);
+                  
+              }
+              
+              
+              //PLATOS
+              
+            Paragraph parrafo2 = new Paragraph();
+            parrafo2.setAlignment(Paragraph.ALIGN_CENTER);
+            parrafo2.add("\n \n  Platos Registrados. \n \n");
+            parrafo2.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY ));
+            
+            
+             
+            documento.add(parrafo2);
+            
+            PdfPTable tablaPlatos = new PdfPTable(4);
+            
+            tablaPlatos.addCell("ID plato");
+            tablaPlatos.addCell("producto");
+            tablaPlatos.addCell("cantidad");
+            tablaPlatos.addCell("precio");
+            
+            
+             
+            
+                try {
+                    Connection conexion2 = null;
+                    conexion2 = ConexionBD.conectar();
+                    PreparedStatement pst2 = conexion2.prepareStatement("select m.menu_id, producto,venta.cantidad, precio from menu m inner join venta on m.menu_id =venta.menu_id where venta.usuarios_id = '" + usuarioid + "' ");
+                    ResultSet rs2 = pst2.executeQuery();
+                    
+                  if(rs2.next()) {
+                  do{
+                       tablaPlatos.addCell(rs2.getString(1));
+                       tablaPlatos.addCell(rs2.getString(2));
+                       tablaPlatos.addCell(rs2.getString(3));
+                       tablaPlatos.addCell(rs2.getString(4));
+                  } while(rs2.next());
+                  
+                  documento.add(tablaPlatos);
+                  
+              }
+                  
+               } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    
+                }
+                
+                
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            
+            
+             //MESA
+                   /*   
+                        select DISTINCT id
+                        from mesas m
+                        inner JOIN  venta on m.id = venta.mesas_id
+                        where venta.usuarios_id= 2;
+                  */  
+                   
+                    Paragraph parrafo3 = new Paragraph();
+                    parrafo3.setAlignment(Paragraph.ALIGN_CENTER);
+                    parrafo3.add("\n \n  Mesa Registrada. \n \n");
+                    parrafo3.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY ));
+                    
+                    documento.add(parrafo3);
+            
+                    PdfPTable mesas = new PdfPTable(1);
+
+                    mesas.addCell("Numero Mesas");
+                    
+                    
+                    
+                    
+                    
+                try {
+                    Connection conexion3 = null;
+                    conexion3 = ConexionBD.conectar();
+                    PreparedStatement pst3 = conexion3.prepareStatement("select distinct id from mesas m inner join venta on m.id = venta.mesas_id where venta.usuarios_id = '" + usuarioid + "' ");
+                    ResultSet rs3 = pst3.executeQuery();
+                    
+                  if(rs3.next()) {
+                  do{
+                       mesas.addCell(rs3.getString(1));
+                       
+                  } while(rs3.next());
+                  
+                  documento.add(mesas);
+                  
+              }
+                  
+               } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    
+                }
+                
+                
+                
+                        
+                    
+                
+
+                  
+                  //TOTAL
+                   
+                  
+                  /* 
+                    select sum(subtotal) as total
+                    from venta
+                    where venta.usuarios_id= 2;  
+                  
+                  */
+                  
+                  
+                    Paragraph parrafo4 = new Paragraph();
+                    parrafo4.setAlignment(Paragraph.ALIGN_CENTER);
+                    parrafo4.add("\n \n  Total a Pagar \n \n");
+                    parrafo4.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY ));
+                    
+                    documento.add(parrafo4);
+            
+                    PdfPTable totalapagar = new PdfPTable(1);
+
+                    totalapagar.addCell("Total");
+                    
+                    
+                    
+                    
+                    
+                try {
+                    Connection conexion4 = null;
+                    conexion4 = ConexionBD.conectar();
+                    PreparedStatement pst4 = conexion4.prepareStatement("select sum(subtotal) as total from venta where venta.usuarios_id = '" + usuarioid + "' ");
+                    ResultSet rs4 = pst4.executeQuery();
+                    
+                  if(rs4.next()) {
+                  do{
+                       totalapagar.addCell(rs4.getString(1));
+                       
+                  } while(rs4.next());
+                  
+                  documento.add(totalapagar);
+                  
+              }
+                  
+               } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    
+                }
+                
+                
+                
+                    Paragraph parrafo5 = new Paragraph();
+                    parrafo5.setAlignment(Paragraph.ALIGN_CENTER);
+                    parrafo5.add("\n \n  Muchas Gracias por su compra , vuelva pronto!! \n \n");
+                    parrafo5.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY ));   
+                    
+                    documento.add(parrafo5);
+            
+                   
+                  
+            
+            
+            documento.close();
+            
+            JOptionPane.showMessageDialog(null, "Ticket generado correctamente, muchas gracias por su compra");
+            
+            
+           
+            
+            
+            
+            
+            
+            
+            
+      
+            
+        } catch (Exception e) {
+             System.out.println(e.getMessage());
+        }
+        
+        
+        
+        
+        
+       
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
