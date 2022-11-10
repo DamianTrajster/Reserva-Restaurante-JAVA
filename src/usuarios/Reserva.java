@@ -1140,14 +1140,15 @@ public class Reserva extends javax.swing.JFrame {
                   
                     Paragraph parrafo4 = new Paragraph();
                     parrafo4.setAlignment(Paragraph.ALIGN_CENTER);
-                    parrafo4.add("\n \n  Total a Pagar \n \n");
+                    parrafo4.add("\n \n  Total a Pagar  Y Fecha Reserva \n \n");
                     parrafo4.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY ));
                     
                     documento.add(parrafo4);
             
-                    PdfPTable totalapagar = new PdfPTable(1);
+                    PdfPTable totalapagar = new PdfPTable(2);
 
-                    totalapagar.addCell("Total");
+                    totalapagar.addCell("Total ");
+                    totalapagar.addCell("Fecha de la reserva");
                     
                     
                     
@@ -1162,6 +1163,7 @@ public class Reserva extends javax.swing.JFrame {
                   if(rs4.next()) {
                   do{
                        totalapagar.addCell(rs4.getString(1));
+                       totalapagar.addCell(fecha);
                        
                   } while(rs4.next());
                   
