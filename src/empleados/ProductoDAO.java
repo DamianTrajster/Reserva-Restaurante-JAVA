@@ -73,7 +73,7 @@ public class ProductoDAO{
     public void Modificar_ProductoVO(ProductoVO vo){
         Conectar conec = new Conectar();
         //si quiero modificar agregar el campo foto=?
-        String sql = "UPDATE menu SET producto = ?, precio = ?, stock = ?,tipo = ?,foto=? \n" +
+        String sql = "UPDATE menu SET producto = ?, precio = ?, stock = ?,tipo = ? \n" +
 "WHERE menu_id = ?;";
         PreparedStatement ps = null;
         try{
@@ -82,8 +82,8 @@ public class ProductoDAO{
             ps.setDouble(2, vo.getPrecio());
             ps.setInt(3, vo.getStock());
             ps.setString(4, vo.getTipo());
-            ps.setBytes(5, vo.getFoto());
-            ps.setInt(6, vo.getIdproducto());
+            //ps.setBytes(5, vo.getFoto());
+            ps.setInt(5, vo.getIdproducto());
             ps.executeUpdate();
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
