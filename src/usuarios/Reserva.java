@@ -976,6 +976,8 @@ public class Reserva extends javax.swing.JFrame {
         
         String usuarioid = jLabelid.getText();
         
+        String fecha = ((JTextField)Calendario.getDateEditor().getUiComponent()).getText();
+        
         
         try {
             String ruta = System.getProperty("user.home");
@@ -1048,7 +1050,7 @@ public class Reserva extends javax.swing.JFrame {
                 try {
                     Connection conexion2 = null;
                     conexion2 = ConexionBD.conectar();
-                    PreparedStatement pst2 = conexion2.prepareStatement("select m.menu_id, producto,venta.cantidad, precio from menu m inner join venta on m.menu_id =venta.menu_id where venta.usuarios_id = '" + usuarioid + "' ");
+                    PreparedStatement pst2 = conexion2.prepareStatement("select m.menu_id, producto,venta.cantidad, precio from menu m inner join venta on m.menu_id =venta.menu_id where venta.usuarios_id = '" + usuarioid + "' and venta.fecha =  '" + fecha + "' ");
                     ResultSet rs2 = pst2.executeQuery();
                     
                   if(rs2.next()) {
@@ -1100,7 +1102,7 @@ public class Reserva extends javax.swing.JFrame {
                 try {
                     Connection conexion3 = null;
                     conexion3 = ConexionBD.conectar();
-                    PreparedStatement pst3 = conexion3.prepareStatement("select distinct id from mesas m inner join venta on m.id = venta.mesas_id where venta.usuarios_id = '" + usuarioid + "' ");
+                    PreparedStatement pst3 = conexion3.prepareStatement("select distinct id from mesas m inner join venta on m.id = venta.mesas_id where venta.usuarios_id = '" + usuarioid + "' and venta.fecha =  '" + fecha + "' " );
                     ResultSet rs3 = pst3.executeQuery();
                     
                   if(rs3.next()) {
@@ -1154,7 +1156,7 @@ public class Reserva extends javax.swing.JFrame {
                 try {
                     Connection conexion4 = null;
                     conexion4 = ConexionBD.conectar();
-                    PreparedStatement pst4 = conexion4.prepareStatement("select sum(subtotal) as total from venta where venta.usuarios_id = '" + usuarioid + "' ");
+                    PreparedStatement pst4 = conexion4.prepareStatement("select sum(subtotal) as total from venta where venta.usuarios_id = '" + usuarioid + "' and venta.fecha =  '" + fecha + "' " );
                     ResultSet rs4 = pst4.executeQuery();
                     
                   if(rs4.next()) {

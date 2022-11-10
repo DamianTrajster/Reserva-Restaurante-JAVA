@@ -68,10 +68,15 @@ public class ListaReservas extends javax.swing.JFrame {
         String  cliente = jtReservas.getValueAt(fsel, 0).toString();
         int clienteint =   Integer.parseInt(cliente);
         
+         
+        String  fecha = jtReservas.getValueAt(fsel, 1).toString();
+        //int clienteint =   Integer.parseInt(cliente);
+        
+        
 	Connection conexion = null;
         
         
-        String sentencia_guardar = "UPDATE venta SET estado = 'despachado' where usuarios_id = " + clienteint;
+        String sentencia_guardar = "UPDATE venta SET estado = 'despachado'  where venta.usuarios_id = '" + clienteint + "' and venta.fecha =  '" + fecha + "' "  ;
        
 	try {
                     
