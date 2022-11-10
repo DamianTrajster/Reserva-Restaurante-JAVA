@@ -51,7 +51,7 @@ public class BienvenidoEmpleado extends javax.swing.JFrame {
               }
                
                   JFreeChart jf = ChartFactory.createBarChart3D("Stock de productos en el restaurante: ","producto", "stock", dataset);
-                  ChartFrame f = new  ChartFrame("total de ventas por dia" , jf);
+                  ChartFrame f = new  ChartFrame("Stock del Restaurante " , jf);
                   f.setSize(1250,700);
                   f.setLocationRelativeTo(null);
                   f.setVisible(true);
