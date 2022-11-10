@@ -404,8 +404,7 @@ public class Visual extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         
-        BienvenidoEmpleado l = new BienvenidoEmpleado();
-        l.setVisible(true);
+        
         this.dispose();
         
         

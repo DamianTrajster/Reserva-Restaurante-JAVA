@@ -1,15 +1,90 @@
 
 package usuarios;
 
+import Metodos_sql.ConexionBD;
+import Metodos_sql.Metodos_sql;
+import empleados.ProductoVO;
+import iniciosesion.Login;
+import java.awt.Image;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
+
 
 public class Promos extends javax.swing.JFrame {
+    
+    Metodos_sql metodos = new Metodos_sql();
+    String user;
 
 
     public Promos() {
         initComponents();
         this.setLocationRelativeTo(this);
+       mostrarPromos();
     }
+    
+         private void mostrarPromos(){
+           
+         
+        DefaultTableModel modelo = new DefaultTableModel();
+        ResultSet rs = Metodos_sql.getTabla("select * from menu where tipo = 'promos'");
+        modelo.setColumnIdentifiers(new Object[]{"Producto ", "Precio", "Stock","tipos", "id"});
+	try{
+            
+            
+	while (rs.next()){
+             modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock"),rs.getString("tipo"), rs.getString("menu_id") });
+        }
+        
+        
+	tblProductos1.setModel(modelo);
+        } catch (Exception e){
+	System.out.println(e);
+        }
+    }
+         
+    //imagenes
+      public void MostrarImagen() {
+          
+           int fsel = tblProductos1.getSelectedRow();
+           String  menu_id = tblProductos1.getValueAt(fsel, 4).toString();
+           int menu_idint =   Integer.parseInt(menu_id);
+          
+          
+           Connection conexion = null;
+           ResultSet rs =Metodos_sql.getTabla("Select foto from menu where menu_id="+menu_idint );
+         
+          
+         try{
+                    
+               
+              while(rs.next()){
+                  
+                      Image i=null;
+                      Blob blob = rs.getBlob("foto");
+                      i= javax.imageio.ImageIO.read(blob.getBinaryStream());
+                      ImageIcon image = new ImageIcon(i.getScaledInstance(250, 218, 0));
+                     
+                     if(blob != null ){
+                        lbImagen.setIcon(image);
+                     } else {
+                         System.out.println(image);
+                            }
+                  
+                  }
 
+                }catch(Exception ex){
+                    System.out.println(ex.getMessage());
+                }
+          
+      }
+     
+    
+    
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -20,37 +95,45 @@ public class Promos extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
         btnVolver = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblProductos1 = new javax.swing.JTable();
+        lbImagen = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("PROMOS");
 
-        jLabel2.setText("Promo 2");
-        jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel3.setText("Promo 3");
-        jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel4.setText("Promo 1");
-        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jTextField1.setText("Indicar producto");
-
-        jTextField2.setText("Indicar producto");
-
-        jTextField3.setText("Indicar producto");
-
         btnVolver.setText("Volver");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVolverActionPerformed(evt);
+            }
+        });
+
+        tblProductos1.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
+        tblProductos1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Producto", "Precio", "Stock", "Id"
+            }
+        ));
+        tblProductos1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProductos1MouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tblProductos1);
+
+        lbImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jButton1.setText("Ir a Reserva");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -61,44 +144,35 @@ public class Promos extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(410, 410, 410)
-                        .addComponent(jLabel1))
+                        .addGap(22, 22, 22)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 543, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lbImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(70, 70, 70)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(72, 72, 72)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(399, 399, 399)
-                        .addComponent(btnVolver)))
-                .addContainerGap(92, Short.MAX_VALUE))
+                        .addGap(353, 353, 353)
+                        .addComponent(jLabel1)))
+                .addContainerGap(39, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(btnVolver)
+                .addGap(202, 202, 202))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(16, 16, 16)
                 .addComponent(jLabel1)
-                .addGap(72, 72, 72)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
-                .addComponent(btnVolver)
-                .addGap(28, 28, 28))
+                    .addComponent(btnVolver)
+                    .addComponent(jButton1))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         pack();
@@ -110,6 +184,31 @@ public class Promos extends javax.swing.JFrame {
 //        bv.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void tblProductos1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductos1MouseClicked
+        // TODO add your handling code here:
+        MostrarImagen();
+    }//GEN-LAST:event_tblProductos1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+               
+                  // TODO add your handling code here:
+            user = Login.user;
+            
+            //captura el nombre
+            String busqueda_nombre = metodos.buscarNombre(user);
+            
+            //caputura id
+             int  busqueda_id = metodos.buscarId(user);
+             String buscarid = String.valueOf(busqueda_id);
+            
+            Reserva re = new Reserva();
+            re.jLabelnombre.setText(busqueda_nombre);
+            re.jLabelid.setText(buscarid);
+            
+            re.setVisible(true);
+            //this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -141,19 +240,17 @@ public class Promos extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Promos().setVisible(true);
+            new Promos().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVolver;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lbImagen;
+    private javax.swing.JTable tblProductos1;
     // End of variables declaration//GEN-END:variables
 }

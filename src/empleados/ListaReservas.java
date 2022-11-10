@@ -1,11 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package empleados;
 
+import Metodos_sql.ConexionBD;
 import Metodos_sql.Metodos_sql;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -29,7 +29,7 @@ public class ListaReservas extends javax.swing.JFrame {
     //METODO PARA MOSTRAR LOS PRODUCTOS
      private void mostrarReservas(){ 
         DefaultTableModel modelo = new DefaultTableModel();
-        ResultSet rs = Metodos_sql.getTabla("SELECT usuarios_id, fecha, horario, menu_id, cantidad, comensales FROM venta;");
+        ResultSet rs = Metodos_sql.getTabla("SELECT usuarios_id, fecha, horario, menu_id, cantidad, comensales FROM venta WHERE estado = 'reservado';");
         modelo.setColumnIdentifiers(new Object[]{"Cliente ", "Fecha", "Horario", "Menu", "Cantidad", "Comensales"});
 	try{    
             while (rs.next()){
@@ -57,6 +57,35 @@ public class ListaReservas extends javax.swing.JFrame {
             System.out.println(e);
         }
     }
+      
+      
+    //METODO PARA QUITAR MESA
+    public void despacharMesa(){
+        
+        int fsel = jtReservas.getSelectedRow();
+        //String estado = tblMesas.getValueAt(fsel2, 2).toString();
+        
+        String  cliente = jtReservas.getValueAt(fsel, 0).toString();
+        int clienteint =   Integer.parseInt(cliente);
+        
+	Connection conexion = null;
+        
+        
+        String sentencia_guardar = "UPDATE venta SET estado = 'despachado' where usuarios_id = " + clienteint;
+       
+	try {
+                    
+             conexion = ConexionBD.conectar();
+             Statement st = conexion.createStatement();
+            
+             st.executeUpdate(sentencia_guardar);  
+             
+             JOptionPane.showMessageDialog(null, "Reserva liberada!!");
+             } catch (Exception e) {
+             System.out.println(e.getMessage());  
+             }
+}  
+      
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -91,6 +120,11 @@ public class ListaReservas extends javax.swing.JFrame {
         jLabel2.setText("Inventario de Reservas");
 
         btnVolver.setText("VOLVER");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
 
         btnDespachar.setText("Despachar");
         btnDespachar.addActionListener(new java.awt.event.ActionListener() {
@@ -148,6 +182,7 @@ public class ListaReservas extends javax.swing.JFrame {
 
     private void btnDespacharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDespacharActionPerformed
         // TODO add your handling code here:
+        despacharMesa();
         int fsel, respuesta;
         
         fsel = jtReservas.getSelectedRow();
@@ -161,13 +196,22 @@ public class ListaReservas extends javax.swing.JFrame {
                     //mostrarReservas();
                     
                     m = (DefaultTableModel) jtReservas.getModel();
-                    m.removeRow(fsel);  
+                    m.removeRow(fsel); 
+                    
                 }
-            }   
+            }    
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Reserva Despachada");
+            
         }
+        
+        
     }//GEN-LAST:event_btnDespacharActionPerformed
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
      * @param args the command line arguments

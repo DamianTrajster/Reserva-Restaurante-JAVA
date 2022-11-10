@@ -31,7 +31,7 @@ Metodos_sql metodos = new Metodos_sql();
         btnReserva = new javax.swing.JButton();
         btnCartilla = new javax.swing.JButton();
         btnMenuDelDia = new javax.swing.JButton();
-        btnPromos = new javax.swing.JButton();
+        btnMasConsumidos = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         btnPromos1 = new javax.swing.JButton();
         lblNombre = new javax.swing.JLabel();
@@ -73,10 +73,10 @@ Metodos_sql metodos = new Metodos_sql();
             }
         });
 
-        btnPromos.setText("Más Consumidos");
-        btnPromos.addActionListener(new java.awt.event.ActionListener() {
+        btnMasConsumidos.setText("Más Consumidos");
+        btnMasConsumidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPromosActionPerformed(evt);
+                btnMasConsumidosActionPerformed(evt);
             }
         });
 
@@ -88,6 +88,8 @@ Metodos_sql metodos = new Metodos_sql();
                 btnPromos1ActionPerformed(evt);
             }
         });
+
+        lblNombre.setFont(new java.awt.Font("Open Sans", 1, 14)); // NOI18N
 
         btnacercade.setText("Acerca De");
         btnacercade.addActionListener(new java.awt.event.ActionListener() {
@@ -101,60 +103,62 @@ Metodos_sql metodos = new Metodos_sql();
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(181, 181, 181)
+                .addComponent(jLabel1)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnacercade)
+                        .addGap(47, 47, 47))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(154, 154, 154))))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnReserva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnCartilla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnMenuDelDia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnPromos, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
-                                    .addComponent(btnPromos1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(35, 35, 35)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(17, Short.MAX_VALUE))
+                        .addGap(53, 53, 53)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCartilla, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnMenuDelDia, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPromos1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnMasConsumidos, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(59, 59, 59)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(118, 118, 118)
-                        .addComponent(btnSalir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
-                        .addComponent(btnacercade)
-                        .addContainerGap(11, Short.MAX_VALUE))))
+                        .addGap(175, 175, 175)
+                        .addComponent(btnSalir)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCartilla, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnMenuDelDia, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnPromos1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnPromos, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(btnSalir)
-                        .addGap(16, 16, 16))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnacercade)
-                        .addContainerGap())))
+                        .addComponent(btnReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCartilla, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnMenuDelDia, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPromos1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnMasConsumidos, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSalir)
+                .addGap(12, 12, 12)
+                .addComponent(btnacercade)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -176,7 +180,7 @@ Metodos_sql metodos = new Metodos_sql();
             re.jLabelid.setText(buscarid);
             
             re.setVisible(true);
-            this.dispose();
+            //this.dispose();
         
        
     }//GEN-LAST:event_btnReservaActionPerformed
@@ -185,25 +189,30 @@ Metodos_sql metodos = new Metodos_sql();
         // TODO add your handling code here:
         Cartilla ca = new Cartilla();
         ca.setVisible(true);
-        this.dispose();
+//        this.dispose();
     }//GEN-LAST:event_btnCartillaActionPerformed
 
     private void btnMenuDelDiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuDelDiaActionPerformed
         // TODO add your handling code here:
-        MenuDelDia me = new MenuDelDia();
+         MenuDelDia me = new MenuDelDia();
         me.setVisible(true);
-        this.dispose();
+          
+      
+//        this.dispose();
     }//GEN-LAST:event_btnMenuDelDiaActionPerformed
 
-    private void btnPromosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPromosActionPerformed
+    private void btnMasConsumidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMasConsumidosActionPerformed
         // TODO add your handling code here:
-        Promos pr = new Promos();
-        pr.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnPromosActionPerformed
+        MasConsumidos ms = new   MasConsumidos();
+        ms.setVisible(true);
+       
+    }//GEN-LAST:event_btnMasConsumidosActionPerformed
 
     private void btnPromos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPromos1ActionPerformed
         // TODO add your handling code here:
+          Promos pr = new Promos();
+         pr.setVisible(true);
+//        this.dispose();
     }//GEN-LAST:event_btnPromos1ActionPerformed
 
     private void btnacercadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnacercadeActionPerformed
@@ -211,7 +220,7 @@ Metodos_sql metodos = new Metodos_sql();
         
         nosotros ac = new nosotros();
         ac.setVisible(true);
-        this.dispose();
+//        this.dispose();
         
     }//GEN-LAST:event_btnacercadeActionPerformed
 
@@ -252,8 +261,8 @@ Metodos_sql metodos = new Metodos_sql();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCartilla;
+    private javax.swing.JButton btnMasConsumidos;
     private javax.swing.JButton btnMenuDelDia;
-    private javax.swing.JButton btnPromos;
     private javax.swing.JButton btnPromos1;
     public javax.swing.JButton btnReserva;
     private javax.swing.JButton btnSalir;

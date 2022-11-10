@@ -20,6 +20,7 @@ public class nosotros extends javax.swing.JFrame {
      * Creates new form nosotros
      */
     public nosotros() {
+        this.setLocationRelativeTo(this);
         initComponents();
         setImageLabel(lblMartin, "src/imagenes/martin.jpg");
         setImageLabel(lblJuan, "src/imagenes/Juan.jpg");

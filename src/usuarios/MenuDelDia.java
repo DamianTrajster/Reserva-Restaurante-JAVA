@@ -1,6 +1,17 @@
 
 package usuarios;
 
+import Metodos_sql.ConexionBD;
+import Metodos_sql.Metodos_sql;
+import java.awt.Image;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
+
 
 public class MenuDelDia extends javax.swing.JFrame {
 
@@ -8,7 +19,41 @@ public class MenuDelDia extends javax.swing.JFrame {
     public MenuDelDia() {
         initComponents();
         this.setLocationRelativeTo(this);
+        mostrarPromos();
+        
     }
+    
+     private void mostrarPromos(){
+             String sentencia_guardar = "select foto, producto from menu where tipo = 'menudia'";
+             
+             
+             try {
+               Connection conexion = null;
+               conexion = ConexionBD.conectar();
+               Statement st = conexion.createStatement();
+               ResultSet rs =  st.executeQuery(sentencia_guardar);
+               
+               
+                while(rs.next()) {
+                    
+                      Image i=null;
+                      Blob blob = rs.getBlob("foto");
+                      i= javax.imageio.ImageIO.read(blob.getBinaryStream());
+                      ImageIcon image = new ImageIcon(i.getScaledInstance(380, 212, 0));
+                     txtfoto.setIcon(image);    
+                     txtnombre.setText(rs.getString("producto"));
+                }
+                  rs.beforeFirst();
+               
+               
+         } catch (Exception e) {
+         }
+             
+             
+      
+    }
+         
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -20,17 +65,16 @@ public class MenuDelDia extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtfoto = new javax.swing.JLabel();
         btnVolver = new javax.swing.JButton();
+        txtnombre = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Open Sans", 1, 18)); // NOI18N
         jLabel1.setText("MENU DEL DIA!!");
 
-        jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jTextField1.setText("** Indicar el Menu del Dia");
+        txtfoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btnVolver.setText("Volver");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
@@ -39,36 +83,42 @@ public class MenuDelDia extends javax.swing.JFrame {
             }
         });
 
+        txtnombre.setFont(new java.awt.Font("Open Sans", 1, 18)); // NOI18N
+        txtnombre.setToolTipText("");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(167, 167, 167))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(185, 185, 185))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(201, 201, 201)
-                        .addComponent(jLabel1))
+                        .addGap(215, 215, 215)
+                        .addComponent(btnVolver))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(62, 62, 62)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(215, 215, 215)
-                        .addComponent(btnVolver)))
-                .addContainerGap(70, Short.MAX_VALUE))
+                        .addComponent(txtfoto, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addGap(66, 66, 66)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addGap(54, 54, 54)
+                .addComponent(txtfoto, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                 .addComponent(btnVolver)
                 .addGap(21, 21, 21))
         );
@@ -121,7 +171,7 @@ public class MenuDelDia extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVolver;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel txtfoto;
+    private javax.swing.JLabel txtnombre;
     // End of variables declaration//GEN-END:variables
 }
