@@ -292,36 +292,63 @@ public class Reserva extends javax.swing.JFrame {
     }
     
     
-    public void confirmarVenta(){
-	int fsel = tblSeleccion.getSelectedRow();
+   public void confirmarVenta(){
+	//int fsel = tblSeleccion.getRowCount();
         int fsel2 = tblMesas.getSelectedRow();
 	String fecha = ((JTextField)Calendario.getDateEditor().getUiComponent()).getText();
-	String subtotal = tblSeleccion.getValueAt(fsel, 3).toString();
+	//String subtotal = tblSeleccion.getValueAt(fsel, 3).toString();
+        
+        
         String mesaid = tblMesas.getValueAt(fsel2, 0).toString();
         String usuarioid = jLabelid.getText();
         String horario = Horario.getSelectedItem().toString();
-        String cantidad = tblSeleccion.getValueAt(fsel, 2).toString();
-        String menuid = tblSeleccion.getValueAt(fsel, 4).toString();
+        //String cantidad = tblSeleccion.getValueAt(fsel, 2).toString();
+        //String menuid = tblSeleccion.getValueAt(fsel, 4).toString();
         String comensales = jtxtComensales.getText();
        String estado = "reservado";
+       
+       
        
         
 	Connection conexion = null;
         //String sql = "SELECT * FROM venta ORDER BY idventa DESC LIMIT 1";
         
-        String sentencia_guardar = "insert into venta (idventa,fecha,subtotal, mesas_id,usuarios_id,horario,cantidad,menu_id,comensales,estado) values(null,'"+ fecha +"','"+ subtotal +"','"+ mesaid +"','"+ usuarioid+"','"+ horario+"','"+ cantidad+"','"+ menuid+"','"+ comensales+"','"+ estado+"')";
+        if(tblSeleccion.getRowCount() > 0){
+            for (int i = 0; i < tblSeleccion.getRowCount(); i++) {
+                 String subtotal = tblSeleccion.getValueAt(i, 3).toString();
+                 String cantidad = tblSeleccion.getValueAt(i, 2).toString();
+                 String menuid = tblSeleccion.getValueAt(i, 4).toString();
+                 
+                 String sentencia_guardar = "insert into venta (idventa,fecha,subtotal, mesas_id,usuarios_id,horario,cantidad,menu_id,comensales,estado) values(null,'"+ fecha +"','"+ subtotal +"','"+ mesaid +"','"+ usuarioid+"','"+ horario+"','"+ cantidad+"','"+ menuid+"','"+ comensales+"','"+ estado+"')";
+                        try {
+
+                    conexion = ConexionBD.conectar();
+                    Statement st = conexion.createStatement();
+
+                    st.executeUpdate(sentencia_guardar);  
+
+                    
+                    } catch (Exception e) {
+                    System.out.println(e.getMessage());  
+                    }
+                   }
+               int respuesta ;
+                respuesta = JOptionPane.showConfirmDialog(null, "¿Esta seguro de confirmar todos los platos?", "Confirmar", JOptionPane.YES_NO_OPTION);
+                if (respuesta == JOptionPane.YES_NO_OPTION) {   
+              JOptionPane.showMessageDialog(null, "Platos agregados correctamente,Imprima el ticket!!");  
+              DefaultTableModel dtm = (DefaultTableModel)  tblSeleccion.getModel(); 
+              while ( tblSeleccion.getRowCount() > 0)
+                {
+                    dtm.removeRow(0);
+                }
+              //dtm.removeRow(tblMesas.getRowCount());
+                }
+        }else {
+             JOptionPane.showMessageDialog(null, "la tabla se encuentra vacia");
+        }
+        
        
-	try {
-                
-             conexion = ConexionBD.conectar();
-             Statement st = conexion.createStatement();
-            
-             st.executeUpdate(sentencia_guardar);  
-             
-             JOptionPane.showMessageDialog(null, "Plato agregado!!, ingrese los demás o por favor emita el ticket.");
-             } catch (Exception e) {
-             System.out.println(e.getMessage());  
-             }
+	
 }
     /*
     public int buscarMesa(){
@@ -942,7 +969,7 @@ public class Reserva extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
-    int Seleccionada = tblSeleccion.getSelectedRow(); 
+    int Seleccionada = tblSeleccion.getRowCount();
         
         try {
           if(Seleccionada == -1){
