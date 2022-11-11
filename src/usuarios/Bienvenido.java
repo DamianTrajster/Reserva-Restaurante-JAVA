@@ -81,6 +81,11 @@ Metodos_sql metodos = new Metodos_sql();
         });
 
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         btnPromos1.setText("Promos");
         btnPromos1.addActionListener(new java.awt.event.ActionListener() {
@@ -223,6 +228,13 @@ Metodos_sql metodos = new Metodos_sql();
 //        this.dispose();
         
     }//GEN-LAST:event_btnacercadeActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+       Login l = new Login();
+       l.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments
