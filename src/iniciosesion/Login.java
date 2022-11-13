@@ -6,6 +6,9 @@ package iniciosesion;
 
 import Metodos_sql.Metodos_sql;
 import empleados.BienvenidoEmpleado;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import usuarios.Bienvenido;
 import usuarios.Reserva;
@@ -23,6 +26,8 @@ public class Login extends javax.swing.JFrame {
         initComponents();
          this.setLocationRelativeTo(null); 
           this.setTitle("Restaurante");
+          
+          setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
     }
     
      Metodos_sql metodos = new Metodos_sql();
@@ -297,4 +302,12 @@ public class Login extends javax.swing.JFrame {
     public javax.swing.JPasswordField txtContraseña;
     public javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public Image getIconImage(){
+    
+    Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("/imagenes/icono.png"));
+        return retValue;
+    }
+
 }

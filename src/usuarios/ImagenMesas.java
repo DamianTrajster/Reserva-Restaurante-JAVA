@@ -4,7 +4,9 @@
  */
 package usuarios;
 
+import java.awt.Color;
 import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -21,6 +23,9 @@ public class ImagenMesas extends javax.swing.JFrame {
     public ImagenMesas() {
         initComponents();
          this.setLocationRelativeTo(this);
+         getContentPane().setBackground(new Color(150, 96, 100));
+         setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
+        
       
         setImageLabel(lblMesas, "src/imagenes/mesas.jpg");
     }
@@ -141,4 +146,12 @@ public class ImagenMesas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblMesas;
     // End of variables declaration//GEN-END:variables
+
+@Override
+    public Image getIconImage(){
+    
+    Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("/imagenes/icono.png"));
+        return retValue;
+    }
+
 }

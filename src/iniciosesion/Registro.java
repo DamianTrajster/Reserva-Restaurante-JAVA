@@ -5,6 +5,9 @@
 package iniciosesion;
 
 import Metodos_sql.Metodos_sql;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,6 +23,7 @@ public class Registro extends javax.swing.JFrame {
         initComponents();
          this.setLocationRelativeTo(null); 
           this.setTitle("Registro de Usuario");
+          setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
     }
     
     //importo la conexion y creo el objeto de la con
@@ -311,4 +315,12 @@ public class Registro extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+
+@Override
+    public Image getIconImage(){
+    
+    Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("/imagenes/icono.png"));
+        return retValue;
+    }
+
 }

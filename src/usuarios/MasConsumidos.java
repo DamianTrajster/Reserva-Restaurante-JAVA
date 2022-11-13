@@ -5,10 +5,14 @@
 package usuarios;
 
 import Metodos_sql.ConexionBD;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import javafx.scene.chart.Chart;
+import javax.swing.ImageIcon;
+//import javafx.scene.chart.Chart;
 import javax.swing.JTextField;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -27,6 +31,8 @@ public class MasConsumidos extends javax.swing.JFrame {
     public MasConsumidos() {
          this.setLocationRelativeTo(this);
         initComponents();
+        getContentPane().setBackground(new Color(51, 141, 214));
+        setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
        
     }
     
@@ -77,9 +83,11 @@ public class MasConsumidos extends javax.swing.JFrame {
 
         midate.setDateFormatString("yyyy-MM-dd");
 
-        jLabel1.setFont(new java.awt.Font("Open Sans", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Open Sans", 3, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(153, 255, 255));
         jLabel1.setText("Seleccione la feha:");
 
+        btnGraficar.setBackground(new java.awt.Color(255, 204, 204));
         btnGraficar.setText("Buscar");
         btnGraficar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,6 +95,7 @@ public class MasConsumidos extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setBackground(new java.awt.Color(255, 153, 153));
         jButton1.setText("Volver");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,15 +108,15 @@ public class MasConsumidos extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(119, Short.MAX_VALUE)
+                .addContainerGap(123, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(midate, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGraficar, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnGraficar, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(116, 116, 116))
         );
         layout.setVerticalGroup(
@@ -179,4 +188,12 @@ public class MasConsumidos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private com.toedter.calendar.JDateChooser midate;
     // End of variables declaration//GEN-END:variables
+
+@Override
+    public Image getIconImage(){
+    
+    Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("/imagenes/icono.png"));
+        return retValue;
+    }
+
 }

@@ -27,8 +27,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.Dimension;
 
-
-
 //IMPORTS DE ITEXT PDF
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -40,19 +38,10 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import java.awt.ScrollPane;
-
-
-
-
+import java.awt.Toolkit;
 import java.io.FileOutputStream;
 
-
-
-
-
 public class Reserva extends javax.swing.JFrame {
-
-
 
     //Declaramos e inicializamos las variables para los JTable y Total de los productos
     DefaultTableModel m;
@@ -65,407 +54,304 @@ public class Reserva extends javax.swing.JFrame {
         this.setLocationRelativeTo(this);
         mostrarDatos();
         mostrarTipos(cmbTipo);
-        this.tblProductos1.setDefaultRenderer(Object.class,  new FilaColor());
-        this.tblMesas.setDefaultRenderer(Object.class,  new MesasColor());
+        this.tblProductos1.setDefaultRenderer(Object.class, new FilaColor());
+        this.tblMesas.setDefaultRenderer(Object.class, new MesasColor());
         mostrarMesas();
-        
-        //caputura id
-             //int  busqueda_id = buscarMesa();
-             //String buscarid = String.valueOf(busqueda_id);
-            //lblMesaElegida.setText(buscarid);
-     }
+        getContentPane().setBackground(new Color(67, 130, 204));
+        setIconImage(new ImageIcon(getClass().getResource("/imagenes/icono.png")).getImage());
+    }
 
-   
-    
     //METODO PARA MOSTRAR LOS PRODUCTOS
-     private void mostrarDatos(){
-           
-         
+    private void mostrarDatos() {
+
         DefaultTableModel modelo = new DefaultTableModel();
         ResultSet rs = Metodos_sql.getTabla("select * from menu");
         modelo.setColumnIdentifiers(new Object[]{"Producto ", "Precio", "Stock", "id"});
-	try{
-            
-            
-	while (rs.next()){
-		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock"), rs.getString("menu_id") });
-        }
-        
-        
-	tblProductos1.setModel(modelo);
-        } catch (Exception e){
-	System.out.println(e);
+        try {
+            while (rs.next()) {
+                modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock"), rs.getString("menu_id")});
+            }
+            tblProductos1.setModel(modelo);
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
-     
-     
-     //imagenes
-      public void MostrarImagen() {
-          
-           int fsel = tblProductos1.getSelectedRow();
-           String  menu_id = tblProductos1.getValueAt(fsel, 3).toString();
-           int menu_idint =   Integer.parseInt(menu_id);
-          
-          
-           Connection conexion = null;
-           ResultSet rs =Metodos_sql.getTabla("Select foto from menu where menu_id="+menu_idint );
-         
-          
-         try{
-                    
-               
-              while(rs.next()){
-                  
-                      Image i=null;
-                      Blob blob = rs.getBlob("foto");
-                      i= javax.imageio.ImageIO.read(blob.getBinaryStream());
-                      ImageIcon image = new ImageIcon(i.getScaledInstance(250, 218, 0));
-                     
-                     if(blob != null ){
-                        lbImagen.setIcon(image);
-                     } else {
-                         System.out.println(image);
-                            }
-                  
-                  }
 
-                }catch(Exception ex){
-                    System.out.println(ex.getMessage());
+    //imagenes
+    public void MostrarImagen() {
+
+        int fsel = tblProductos1.getSelectedRow();
+        String menu_id = tblProductos1.getValueAt(fsel, 3).toString();
+        int menu_idint = Integer.parseInt(menu_id);
+
+        Connection conexion = null;
+        ResultSet rs = Metodos_sql.getTabla("Select foto from menu where menu_id=" + menu_idint);
+
+        try {
+            while (rs.next()) {
+                Image i = null;
+                Blob blob = rs.getBlob("foto");
+                i = javax.imageio.ImageIO.read(blob.getBinaryStream());
+                ImageIcon image = new ImageIcon(i.getScaledInstance(250, 218, 0));
+
+                if (blob != null) {
+                    lbImagen.setIcon(image);
+                } else {
+                    System.out.println(image);
                 }
-          
-      }
-     
-     
-   
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }
+
     //LLENAR COMBOBOX
-          private void mostrarTipos(JComboBox cmbTipo){
-	
+    private void mostrarTipos(JComboBox cmbTipo) {
+
         ResultSet rs = Metodos_sql.getTabla("select DISTINCT tipo from menu");
-        
-	try{
-	while (rs.next()){
-		cmbTipo.addItem(rs.getString("tipo"));
-        }
-	
-        } catch (Exception e){
-	System.out.println(e);
-        }
-    }
-          
-     
-     // BUscar por tipo 
-        private void  buscarTipos(JComboBox cmbTipo){
-         
-	DefaultTableModel modelo = new DefaultTableModel();
-        ResultSet rs = Metodos_sql.getTabla("select * from menu where tipo like '%"+ cmbTipo.getSelectedItem() +"%' ");
-        modelo.setColumnIdentifiers(new Object[]{"Producto ", "Precio", "Stock", "id"});
-	try{
-	while (rs.next()){
-		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock"), rs.getString("menu_id") });
-        }
-	tblProductos1.setModel(modelo);
-        } catch (Exception e){ 
+
+        try {
+            while (rs.next()) {
+                cmbTipo.addItem(rs.getString("tipo"));
+            }
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
-     
-     
-     
-     
-  //METODO PARA BUSCAR DATOS
-      private void  filtrarDatos(String producto){
-	DefaultTableModel modelo = new DefaultTableModel();
-        ResultSet rs = Metodos_sql.getTabla("select * from menu where producto like '%"+producto+"%' ");
+
+    // BUscar por tipo 
+    private void buscarTipos(JComboBox cmbTipo) {
+
+        DefaultTableModel modelo = new DefaultTableModel();
+        ResultSet rs = Metodos_sql.getTabla("select * from menu where tipo like '%" + cmbTipo.getSelectedItem() + "%' ");
         modelo.setColumnIdentifiers(new Object[]{"Producto ", "Precio", "Stock", "id"});
-	try{
-	while (rs.next()){
-		modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock"), rs.getString("menu_id") });
-        }
-	tblProductos1.setModel(modelo);
-        } catch (Exception e){
+        try {
+            while (rs.next()) {
+                modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock"), rs.getString("menu_id")});
+            }
+            tblProductos1.setModel(modelo);
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
-      
-      
-      //METODO PARA RESTAR STOCK
-           public void RestarStock(){
-               
-             int cant = Integer.parseInt(jtxtCant.getText());
-             int fsel = tblProductos1.getSelectedRow();
-             String stock = tblProductos1.getValueAt(fsel, 2).toString();
-             int stockint = Integer.parseInt(stock);
-             
-              String  menu_id = tblProductos1.getValueAt(fsel, 3).toString();
-              int menu_idint =   Integer.parseInt(menu_id);
-             
-               if (stockint > 0 &&  cant <= stockint) {
-                    Connection conexion = null;
-                     String sentencia_guardar ="UPDATE menu SET stock = stock - '" + cant +   "' where menu_id = " +  menu_idint;
-                            try {
 
-                              conexion = ConexionBD.conectar();
-                              Statement st = conexion.createStatement();
-                              int n = st.executeUpdate(sentencia_guardar);
-                                  
-                              
-                                
-                            
-                          } catch (Exception e) {
-                               System.out.println(e.getMessage());
-                              
-                         }
-               
-               
-               
-               
-               
-               } 
-              
-        
-        
-        
+    //METODO PARA BUSCAR DATOS
+    private void filtrarDatos(String producto) {
+
+        DefaultTableModel modelo = new DefaultTableModel();
+        ResultSet rs = Metodos_sql.getTabla("select * from menu where producto like '%" + producto + "%' ");
+        modelo.setColumnIdentifiers(new Object[]{"Producto ", "Precio", "Stock", "id"});
+        try {
+            while (rs.next()) {
+                modelo.addRow(new Object[]{rs.getString("producto"), rs.getString("precio"), rs.getString("stock"), rs.getString("menu_id")});
+            }
+            tblProductos1.setModel(modelo);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
-           
-     // METODO PARA devolver STOCK
-           
-     public void devolverStock(){
-               
-          
-             int fsel = tblSeleccion.getSelectedRow();
-             String cant = tblSeleccion.getValueAt(fsel, 2).toString();
-             int cantint = Integer.parseInt(cant);
-             
-              String  menu_id = tblSeleccion.getValueAt(fsel, 4).toString();
-              int menu_idint =   Integer.parseInt(menu_id);
-             
-               if (cantint > 0) {
-                    Connection conexion = null;
-                     String sentencia_guardar ="UPDATE menu SET stock = stock + '" + cantint +   "' where menu_id = " +  menu_idint;
-                            try {
 
-                              conexion = ConexionBD.conectar();
-                              Statement st = conexion.createStatement();
-                              int n = st.executeUpdate(sentencia_guardar);
-                                  
-                              
-                                
-                            
-                          } catch (Exception e) {
-                               System.out.println(e.getMessage());
-                              
-                         }
-               
-               
-               
-               
-               
-               } 
-              
-        
-        
-        
+    //METODO PARA RESTAR STOCK
+    public void RestarStock() {
+
+        int cant = Integer.parseInt(jtxtCant.getText());
+        int fsel = tblProductos1.getSelectedRow();
+        String stock = tblProductos1.getValueAt(fsel, 2).toString();
+        int stockint = Integer.parseInt(stock);
+        String menu_id = tblProductos1.getValueAt(fsel, 3).toString();
+        int menu_idint = Integer.parseInt(menu_id);
+
+        if (stockint > 0 && cant <= stockint) {
+
+            Connection conexion = null;
+
+            String sentencia_guardar = "UPDATE menu SET stock = stock - '" + cant + "' where menu_id = " + menu_idint;
+
+            try {
+
+                conexion = ConexionBD.conectar();
+                Statement st = conexion.createStatement();
+                int n = st.executeUpdate(sentencia_guardar);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
-           
 
-           
-   //METODO PARA CONTROL STOCK         
+    // METODO PARA devolver STOCK       
+    public void devolverStock() {
+
+        int fsel = tblSeleccion.getSelectedRow();
+        String cant = tblSeleccion.getValueAt(fsel, 2).toString();
+        int cantint = Integer.parseInt(cant);
+        String menu_id = tblSeleccion.getValueAt(fsel, 4).toString();
+        int menu_idint = Integer.parseInt(menu_id);
+
+        if (cantint > 0) {
+            Connection conexion = null;
+            String sentencia_guardar = "UPDATE menu SET stock = stock + '" + cantint + "' where menu_id = " + menu_idint;
+            try {
+                conexion = ConexionBD.conectar();
+                Statement st = conexion.createStatement();
+                int n = st.executeUpdate(sentencia_guardar);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    //METODO PARA CONTROL STOCK         
     public class FilaColor extends DefaultTableCellRenderer {
-            
-        public Component getTableCellRendererComponent (JTable table, Object velue, boolean isSelected, boolean hasFocus, int row, int column){
-            
-            String stock = tblProductos1.getValueAt(row,2).toString();
+
+        public Component getTableCellRendererComponent(JTable table, Object velue, boolean isSelected, boolean hasFocus, int row, int column) {
+
+            String stock = tblProductos1.getValueAt(row, 2).toString();
             int stockint = Integer.parseInt(stock);
-            
-            if(stockint == 0) {
+
+            if (stockint == 0) {
                 this.setBackground(Color.red);
-            }  else if(stockint <= 5) {
+            } else if (stockint <= 5) {
                 this.setBackground(Color.orange);
-            }else {
+            } else {
                 this.setBackground(Color.white);
                 this.setForeground(Color.black);
             }
-  
-          return super.getTableCellRendererComponent(table, velue, isSelected, hasFocus, row, column);
+
+            return super.getTableCellRendererComponent(table, velue, isSelected, hasFocus, row, column);
         }
-                
+
     }
-    
-    
-   public void confirmarVenta(){
-	//int fsel = tblSeleccion.getRowCount();
+
+    public void confirmarVenta() {
+
         int fsel2 = tblMesas.getSelectedRow();
-	String fecha = ((JTextField)Calendario.getDateEditor().getUiComponent()).getText();
-	//String subtotal = tblSeleccion.getValueAt(fsel, 3).toString();
-        
-        
+        String fecha = ((JTextField) Calendario.getDateEditor().getUiComponent()).getText();
         String mesaid = tblMesas.getValueAt(fsel2, 0).toString();
         String usuarioid = jLabelid.getText();
         String horario = Horario.getSelectedItem().toString();
-        //String cantidad = tblSeleccion.getValueAt(fsel, 2).toString();
-        //String menuid = tblSeleccion.getValueAt(fsel, 4).toString();
         String comensales = jtxtComensales.getText();
-       String estado = "reservado";
-       
-       
-       
-        
-	Connection conexion = null;
-        //String sql = "SELECT * FROM venta ORDER BY idventa DESC LIMIT 1";
-        
-        if(tblSeleccion.getRowCount() > 0){
+        String estado = "reservado";
+
+        Connection conexion = null;
+
+        if (tblSeleccion.getRowCount() > 0) {
             for (int i = 0; i < tblSeleccion.getRowCount(); i++) {
-                 String subtotal = tblSeleccion.getValueAt(i, 3).toString();
-                 String cantidad = tblSeleccion.getValueAt(i, 2).toString();
-                 String menuid = tblSeleccion.getValueAt(i, 4).toString();
-                 
-                 String sentencia_guardar = "insert into venta (idventa,fecha,subtotal, mesas_id,usuarios_id,horario,cantidad,menu_id,comensales,estado) values(null,'"+ fecha +"','"+ subtotal +"','"+ mesaid +"','"+ usuarioid+"','"+ horario+"','"+ cantidad+"','"+ menuid+"','"+ comensales+"','"+ estado+"')";
-                        try {
+                String subtotal = tblSeleccion.getValueAt(i, 3).toString();
+                String cantidad = tblSeleccion.getValueAt(i, 2).toString();
+                String menuid = tblSeleccion.getValueAt(i, 4).toString();
+
+                String sentencia_guardar = "insert into venta (idventa,fecha,subtotal, mesas_id,usuarios_id,horario,cantidad,menu_id,comensales,estado) values(null,'" + fecha + "','" + subtotal + "','" + mesaid + "','" + usuarioid + "','" + horario + "','" + cantidad + "','" + menuid + "','" + comensales + "','" + estado + "')";
+
+                try {
 
                     conexion = ConexionBD.conectar();
                     Statement st = conexion.createStatement();
 
-                    st.executeUpdate(sentencia_guardar);  
+                    st.executeUpdate(sentencia_guardar);
 
-                    
-                    } catch (Exception e) {
-                    System.out.println(e.getMessage());  
-                    }
-                   }
-               int respuesta ;
-                respuesta = JOptionPane.showConfirmDialog(null, "¿Esta seguro de confirmar todos los platos?", "Confirmar", JOptionPane.YES_NO_OPTION);
-                if (respuesta == JOptionPane.YES_NO_OPTION) {   
-              JOptionPane.showMessageDialog(null, "Platos agregados correctamente,Imprima el ticket!!");  
-              DefaultTableModel dtm = (DefaultTableModel)  tblSeleccion.getModel(); 
-              while ( tblSeleccion.getRowCount() > 0)
-                {
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            int respuesta;
+            respuesta = JOptionPane.showConfirmDialog(null, "¿Esta seguro de confirmar todos los platos?", "Confirmar", JOptionPane.YES_NO_OPTION);
+
+            if (respuesta == JOptionPane.YES_NO_OPTION) {
+                JOptionPane.showMessageDialog(null, "Platos agregados correctamente,Imprima el ticket!!");
+                DefaultTableModel dtm = (DefaultTableModel) tblSeleccion.getModel();
+                while (tblSeleccion.getRowCount() > 0) {
                     dtm.removeRow(0);
                 }
-              //dtm.removeRow(tblMesas.getRowCount());
-                }
-        }else {
-             JOptionPane.showMessageDialog(null, "la tabla se encuentra vacia");
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "la tabla se encuentra vacia");
         }
-        
-       
-	
-}
-    /*
-    public int buscarMesa(){
-        int busqueda_id= 0;
-        Connection conexion = null;
-        try {
-            conexion  = ConexionBD.conectar();
-            
-            String sentencia_buscar=("SELECT * from mesas where reservado = 'si' order by id desc limit 1" );
-            
-            sentencia_preparada = conexion.prepareStatement(sentencia_buscar);
-            resultado= sentencia_preparada.executeQuery();
-            
-            if(resultado.next()){
-               busqueda_id = resultado.getInt(1);
-              
-            }    
-            conexion.close();   
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        
-        return busqueda_id;
-    
     }
-      */     
-    
+
     //METODO PARA MOSTRAR MESAS
-      private void  mostrarMesas(){
-	DefaultTableModel modelo = new DefaultTableModel();
+    private void mostrarMesas() {
+        DefaultTableModel modelo = new DefaultTableModel();
         ResultSet rs = Metodos_sql.getTabla("select * from mesas");
         modelo.setColumnIdentifiers(new Object[]{"Id ", "Numero", "Reservado"});
-	try{
-	while (rs.next()){
-		modelo.addRow(new Object[]{rs.getString("id"), rs.getString("numero"), rs.getString("reservado")});
-        }
-	tblMesas.setModel(modelo);
-        } catch (Exception e){
+        try {
+            while (rs.next()) {
+                modelo.addRow(new Object[]{rs.getString("id"), rs.getString("numero"), rs.getString("reservado")});
+            }
+            tblMesas.setModel(modelo);
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
-    
-    
+
     //METODO PARA CONTROLAR DISPONIBILIDAD DE MESAS        
     public class MesasColor extends DefaultTableCellRenderer {
-            
-        public Component getTableCellRendererComponent (JTable table, Object velue, boolean isSelected, boolean hasFocus, int row, int column){
-            
-            String estado = tblMesas.getValueAt(row,2).toString();
-            //int stockint = Integer.parseInt(estado);
-            
-            if(estado.equals("si")) {
-                this.setBackground(new Color(240,128,128));
-            }  else if(estado.equals("no")) {
-                this.setBackground(new Color(144,238,144));
-            }
-          return super.getTableCellRendererComponent(table, velue, isSelected, hasFocus, row, column);
-        }
-                
-    }  
 
-    
+        public Component getTableCellRendererComponent(JTable table, Object velue, boolean isSelected, boolean hasFocus, int row, int column) {
+
+            String estado = tblMesas.getValueAt(row, 2).toString();
+            //int stockint = Integer.parseInt(estado);
+
+            if (estado.equals("si")) {
+                this.setBackground(new Color(240, 128, 128));
+            } else if (estado.equals("no")) {
+                this.setBackground(new Color(144, 238, 144));
+            }
+            return super.getTableCellRendererComponent(table, velue, isSelected, hasFocus, row, column);
+        }
+
+    }
+
     //METODO PARA RESERVAR MESA
-    public void reservarMesa(){
-        
+    public void reservarMesa() {
+
         int fsel = tblMesas.getSelectedRow();
-        //String estado = tblMesas.getValueAt(fsel2, 2).toString();
-        
-        String  menu_id = tblMesas.getValueAt(fsel, 0).toString();
-        int menu_idint =   Integer.parseInt(menu_id);
-             
-        
-	Connection conexion = null;
-        
-        
+        String menu_id = tblMesas.getValueAt(fsel, 0).toString();
+        int menu_idint = Integer.parseInt(menu_id);
+
+        Connection conexion = null;
+
         String sentencia_guardar = "UPDATE mesas SET reservado = 'si' where id = " + menu_idint;
-                
-       
-	try {
-                    
-             conexion = ConexionBD.conectar();
-             Statement st = conexion.createStatement();
-            
-             st.executeUpdate(sentencia_guardar);  
-             
-             JOptionPane.showMessageDialog(null, "Mesa reservada!!");
-             } catch (Exception e) {
-             System.out.println(e.getMessage());  
-             }
-}
+
+        try {
+
+            conexion = ConexionBD.conectar();
+            Statement st = conexion.createStatement();
+
+            st.executeUpdate(sentencia_guardar);
+
+            JOptionPane.showMessageDialog(null, "Mesa reservada!!");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     //METODO PARA QUITAR MESA
-    public void liberarMesa(){
-        
+    public void liberarMesa() {
+
         int fsel = tblMesas.getSelectedRow();
-        //String estado = tblMesas.getValueAt(fsel2, 2).toString();
-        
-        String  menu_id = tblMesas.getValueAt(fsel, 0).toString();
-        int menu_idint =   Integer.parseInt(menu_id);
-        
-	Connection conexion = null;
-        
-        
+        String menu_id = tblMesas.getValueAt(fsel, 0).toString();
+        int menu_idint = Integer.parseInt(menu_id);
+
+        Connection conexion = null;
+
         String sentencia_guardar = "UPDATE mesas SET reservado = 'no' where id = " + menu_idint;
-       
-	try {
-                    
-             conexion = ConexionBD.conectar();
-             Statement st = conexion.createStatement();
-            
-             st.executeUpdate(sentencia_guardar);  
-             
-             JOptionPane.showMessageDialog(null, "Mesa liberada!!");
-             } catch (Exception e) {
-             System.out.println(e.getMessage());  
-             }
-}
+
+        try {
+
+            conexion = ConexionBD.conectar();
+            Statement st = conexion.createStatement();
+
+            st.executeUpdate(sentencia_guardar);
+
+            JOptionPane.showMessageDialog(null, "Mesa liberada!!");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -533,6 +419,8 @@ public class Reserva extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tblSeleccion);
 
+        btnAgregar.setBackground(new java.awt.Color(153, 255, 153));
+        btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAgregar.setText("AGREGAR");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -540,6 +428,8 @@ public class Reserva extends javax.swing.JFrame {
             }
         });
 
+        btnQuitar.setBackground(new java.awt.Color(153, 255, 153));
+        btnQuitar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnQuitar.setText("QUITAR");
         btnQuitar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -549,6 +439,8 @@ public class Reserva extends javax.swing.JFrame {
 
         lbImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Cant:");
 
         jtxtCant.setText("1");
@@ -569,8 +461,12 @@ public class Reserva extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tblProductos1);
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Total:");
 
+        btnVolver.setBackground(new java.awt.Color(153, 255, 153));
+        btnVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnVolver.setText("VOLVER");
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -578,11 +474,15 @@ public class Reserva extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Arial Narrow", 1, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(51, 255, 204));
         jLabel3.setText("RESERVA");
 
         Horario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11:00", "12:00", "13:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00" }));
 
+        jButton1.setBackground(new java.awt.Color(153, 255, 153));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setText("CONFIRMAR PLATO");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -592,6 +492,8 @@ public class Reserva extends javax.swing.JFrame {
 
         jLabelnombre.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Buscar");
 
         txtBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -605,7 +507,9 @@ public class Reserva extends javax.swing.JFrame {
             }
         });
 
-        btnVerCartilla.setText("Ver Cartilla");
+        btnVerCartilla.setBackground(new java.awt.Color(153, 255, 153));
+        btnVerCartilla.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnVerCartilla.setText("VER CARTILLA");
         btnVerCartilla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVerCartillaActionPerformed(evt);
@@ -623,6 +527,9 @@ public class Reserva extends javax.swing.JFrame {
             }
         });
 
+        btnBuscarTipo.setBackground(new java.awt.Color(255, 153, 153));
+        btnBuscarTipo.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnBuscarTipo.setForeground(new java.awt.Color(102, 102, 102));
         btnBuscarTipo.setText("Buscar Categoria");
         btnBuscarTipo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -630,6 +537,9 @@ public class Reserva extends javax.swing.JFrame {
             }
         });
 
+        btnReset.setBackground(new java.awt.Color(255, 153, 153));
+        btnReset.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnReset.setForeground(new java.awt.Color(102, 102, 102));
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -641,10 +551,14 @@ public class Reserva extends javax.swing.JFrame {
 
         Calendario.setDateFormatString("yyyy-MM-dd");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Comensales:");
 
         jtxtComensales.setText("1");
 
+        jButton2.setBackground(new java.awt.Color(153, 255, 153));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setText("TICKET");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -670,6 +584,9 @@ public class Reserva extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblMesas);
 
+        btnConfMesa.setBackground(new java.awt.Color(255, 153, 153));
+        btnConfMesa.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnConfMesa.setForeground(new java.awt.Color(102, 102, 102));
         btnConfMesa.setText("Confirmar Mesa");
         btnConfMesa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -677,6 +594,9 @@ public class Reserva extends javax.swing.JFrame {
             }
         });
 
+        btnQuitarMesa.setBackground(new java.awt.Color(255, 153, 153));
+        btnQuitarMesa.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnQuitarMesa.setForeground(new java.awt.Color(102, 102, 102));
         btnQuitarMesa.setText("Quitar Mesa");
         btnQuitarMesa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -684,6 +604,9 @@ public class Reserva extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(255, 153, 153));
+        jButton3.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(102, 102, 102));
         jButton3.setText("Mostrar Mesas");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -692,9 +615,11 @@ public class Reserva extends javax.swing.JFrame {
         });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Seleccionar fecha:");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Seleccionar hora:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -713,16 +638,19 @@ public class Reserva extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(101, 101, 101)
-                                                .addComponent(btnBuscarTipo)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(btnReset)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(102, 102, 102)))
+                                                .addGap(102, 102, 102))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(101, 101, 101)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(jLabel3)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(btnBuscarTipo)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(btnReset)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                         .addComponent(btnVerCartilla, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
@@ -730,74 +658,76 @@ public class Reserva extends javax.swing.JFrame {
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                             .addComponent(btnQuitar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(18, 18, 18)
-                                            .addComponent(jLabel1)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jtxtCant, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(jLabel4)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jtxtComensales, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(jLabel1)
+                                                    .addGap(46, 46, 46)
+                                                    .addComponent(jLabel4))
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(jtxtCant, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(24, 24, 24)
+                                                    .addComponent(jtxtComensales, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGap(28, 28, 28)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(Calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(18, 18, 18)
+                                                    .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(18, 18, 18)
+                                                    .addComponent(jLabel7))))
                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(31, 31, 31))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtxtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(Calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtxtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(73, 73, 73)
-                                        .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(60, 60, 60)
-                                        .addComponent(jLabel7)))
+                                        .addGap(30, 30, 30)
+                                        .addComponent(jLabel2)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnConfMesa)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnQuitarMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lbImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(btnConfMesa)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnQuitarMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lbImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(69, 69, 69)
+                                    .addComponent(jButton3)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(69, 69, 69)
-                                .addComponent(jButton3))))
+                                .addGap(143, 143, 143)
+                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(33, 33, 33)
                                 .addComponent(jLabelid, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabelnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(134, 134, 134)
-                                .addComponent(jLabel3))
+                                .addComponent(jLabelnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(55, 55, 55)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(149, 149, 149)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(89, 89, 89)
-                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(204, 204, 204)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(49, 49, 49))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jLabel3))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addComponent(jLabelnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabelid, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabelid, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel3)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -815,26 +745,34 @@ public class Reserva extends javax.swing.JFrame {
                                     .addComponent(btnReset))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnQuitar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel7))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jtxtCant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jtxtComensales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnQuitar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3)
-                        .addGap(10, 10, 10)))
+                                .addGap(272, 272, 272)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton3)
+                            .addComponent(jtxtCant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxtComensales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -843,29 +781,16 @@ public class Reserva extends javax.swing.JFrame {
                         .addComponent(btnConfMesa)
                         .addComponent(btnQuitarMesa))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(Horario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(2, 2, 2)
-                                        .addComponent(Calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(4, 4, 4))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jtxtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtxtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -874,69 +799,63 @@ public class Reserva extends javax.swing.JFrame {
 
     private void tblProductos1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductos1MouseClicked
         // TODO add your handling code here:
-            MostrarImagen();    
+        MostrarImagen();
     }//GEN-LAST:event_tblProductos1MouseClicked
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         // TODO add your handling code here:
-//        Bienvenido bv = new Bienvenido();
-//        bv.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-          
-         
 
         try {
             String producto, precio, cant, stock, importe, menu_id;
             double calculo = 0.0, subt = 0.0;
             int fsel = tblProductos1.getSelectedRow();
-             stock = tblProductos1.getValueAt(fsel, 2).toString();
-             int stockint = Integer.parseInt(stock);
-             int canti = Integer.parseInt(jtxtCant.getText());
-          
-                
+            stock = tblProductos1.getValueAt(fsel, 2).toString();
+            int stockint = Integer.parseInt(stock);
+            int canti = Integer.parseInt(jtxtCant.getText());
 
-            if (fsel == -1 ) {
-                 JOptionPane.showMessageDialog(null, "Debe seleccionar un producto");
+            if (fsel == -1) {
+                JOptionPane.showMessageDialog(null, "Debe seleccionar un producto");
             } else {
-                  if(stockint > 0 &&  canti <= stockint) {
-                        m = (DefaultTableModel) tblProductos1.getModel();
-                       producto = tblProductos1.getValueAt(fsel, 0).toString();
-                       precio = tblProductos1.getValueAt(fsel, 1).toString();
-                       menu_id = tblProductos1.getValueAt(fsel, 3).toString();
-                       cant =  jtxtCant.getText();
+                if (stockint > 0 && canti <= stockint) {
+                    m = (DefaultTableModel) tblProductos1.getModel();
+                    producto = tblProductos1.getValueAt(fsel, 0).toString();
+                    precio = tblProductos1.getValueAt(fsel, 1).toString();
+                    menu_id = tblProductos1.getValueAt(fsel, 3).toString();
+                    cant = jtxtCant.getText();
 
-                       //Realizamos los calculos
-                       subt = (Double.parseDouble(precio) * Integer.parseInt(cant));
-                       importe = String.valueOf(subt);
+                    //Realizamos los calculos
+                    subt = (Double.parseDouble(precio) * Integer.parseInt(cant));
+                    importe = String.valueOf(subt);
 
-                       m = (DefaultTableModel) tblSeleccion.getModel();
-                       String index[] = {producto, precio, cant, importe, menu_id};
-                       m.addRow(index);
+                    m = (DefaultTableModel) tblSeleccion.getModel();
+                    String index[] = {producto, precio, cant, importe, menu_id};
+                    m.addRow(index);
 
-                       calculo = (Double.parseDouble(precio) * Integer.parseInt(jtxtCant.getText()));
-                       total = total + calculo;
-                       jtxtTotal.setText("" + total);
-                       
-                     RestarStock();
-                     mostrarDatos();
+                    calculo = (Double.parseDouble(precio) * Integer.parseInt(jtxtCant.getText()));
+                    total = total + calculo;
+                    jtxtTotal.setText("" + total);
+
+                    RestarStock();
+                    mostrarDatos();
                 } else {
-                     JOptionPane.showMessageDialog(null, "no hay stock suficiente de este producto");
+                    JOptionPane.showMessageDialog(null, "no hay stock suficiente de este producto");
                 }
-               
+
             }
-        
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
         // TODO add your handling code here:
+
         double subt = 0.0, importe = 0.0, precioactual = 0.0;
         int fsel, respuesta;
         fsel = tblSeleccion.getSelectedRow();
@@ -954,14 +873,8 @@ public class Reserva extends javax.swing.JFrame {
                     jtxtTotal.setText("" + total);
                     m = (DefaultTableModel) tblSeleccion.getModel();
                     m.removeRow(fsel);
-                  
                 }
-                
-         
             }
-           
-                    
-            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Articulo eliminado");
         }
@@ -972,7 +885,6 @@ public class Reserva extends javax.swing.JFrame {
         // TODO add your handling code here:
         Cartilla ca = new Cartilla();
         ca.setVisible(true);
-       //this.dispose();
     }//GEN-LAST:event_btnVerCartillaActionPerformed
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
@@ -1012,20 +924,20 @@ public class Reserva extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
-    int Seleccionada = tblSeleccion.getRowCount();
-        
+
+        int Seleccionada = tblSeleccion.getRowCount();
+
         try {
-          if(Seleccionada == -1){
-              JOptionPane.showMessageDialog(null, "Seleccione un plato para confirmar");
-        }else {
-            confirmarVenta();
-        }
+
+            if (Seleccionada == -1) {
+                JOptionPane.showMessageDialog(null, "Seleccione un plato para confirmar");
+            } else {
+                confirmarVenta();
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-       
-       
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnConfMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfMesaActionPerformed
@@ -1042,257 +954,183 @@ public class Reserva extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
+
         Document documento = new Document();
-        
+
         String usuarioid = jLabelid.getText();
-        
-        String fecha = ((JTextField)Calendario.getDateEditor().getUiComponent()).getText();
+        String fecha = ((JTextField) Calendario.getDateEditor().getUiComponent()).getText();
         String horario = Horario.getSelectedItem().toString();
-        
-        
+
         try {
             String ruta = System.getProperty("user.home");
-            PdfWriter.getInstance(documento,new  FileOutputStream(ruta + "/Desktop/" + jLabelnombre.getText().trim() + ".pdf" ));
-            
-            com.itextpdf.text.Image header =  com.itextpdf.text.Image.getInstance("src/imagenes/bannerPDF.jpg");
-            header.scaleToFit(650,1000);
+            PdfWriter.getInstance(documento, new FileOutputStream(ruta + "/Desktop/" + jLabelnombre.getText().trim() + ".pdf"));
+
+            com.itextpdf.text.Image header = com.itextpdf.text.Image.getInstance("src/imagenes/bannerPDF.jpg");
+            header.scaleToFit(650, 1000);
             header.setAlignment(Chunk.ALIGN_CENTER);
-            
-            
+
             //clientes
-            
             Paragraph parrafo = new Paragraph();
             parrafo.setAlignment(Paragraph.ALIGN_CENTER);
             parrafo.add("Informacion del Cliente. \n \n");
-            parrafo.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY ));
-            
+            parrafo.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY));
+
             documento.open();
             documento.add(header);
             documento.add(parrafo);
-            
+
             PdfPTable tablaCliente = new PdfPTable(3);
-            
+
             tablaCliente.addCell("ID");
             tablaCliente.addCell("nombre");
             tablaCliente.addCell("correo");
-            
-        
-           
-            
+
             try {
-              Connection conexion = null;
-              conexion = ConexionBD.conectar();
-              PreparedStatement pst = conexion.prepareStatement("select id,nombre,correo from usuarios where id = '" + usuarioid + "' ");
-              ResultSet rs = pst.executeQuery();
-              
-              if(rs.next()) {
-                  do{
-                      tablaCliente.addCell(rs.getString(1));
-                      tablaCliente.addCell(rs.getString(2));
-                      tablaCliente.addCell(rs.getString(3));
-                  } while(rs.next());
-                  
-                  documento.add(tablaCliente);
-                  
-              }
-              
-              
-              //PLATOS
-              
-            Paragraph parrafo2 = new Paragraph();
-            parrafo2.setAlignment(Paragraph.ALIGN_CENTER);
-            parrafo2.add("\n \n  Platos Registrados. \n \n");
-            parrafo2.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY ));
-            
-            
-             
-            documento.add(parrafo2);
-            
-            PdfPTable tablaPlatos = new PdfPTable(4);
-            
-            tablaPlatos.addCell("ID plato");
-            tablaPlatos.addCell("producto");
-            tablaPlatos.addCell("cantidad");
-            tablaPlatos.addCell("precio");
-            
-            
-             
-            
+                Connection conexion = null;
+                conexion = ConexionBD.conectar();
+                PreparedStatement pst = conexion.prepareStatement("select id,nombre,correo from usuarios where id = '" + usuarioid + "' ");
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    do {
+                        tablaCliente.addCell(rs.getString(1));
+                        tablaCliente.addCell(rs.getString(2));
+                        tablaCliente.addCell(rs.getString(3));
+                    } while (rs.next());
+
+                    documento.add(tablaCliente);
+                }
+
+                //PLATOS
+                Paragraph parrafo2 = new Paragraph();
+                parrafo2.setAlignment(Paragraph.ALIGN_CENTER);
+                parrafo2.add("\n \n  Platos Registrados. \n \n");
+                parrafo2.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY));
+
+                documento.add(parrafo2);
+
+                PdfPTable tablaPlatos = new PdfPTable(4);
+
+                tablaPlatos.addCell("ID plato");
+                tablaPlatos.addCell("producto");
+                tablaPlatos.addCell("cantidad");
+                tablaPlatos.addCell("precio");
+
                 try {
                     Connection conexion2 = null;
                     conexion2 = ConexionBD.conectar();
                     PreparedStatement pst2 = conexion2.prepareStatement("select m.menu_id, producto,venta.cantidad, precio from menu m inner join venta on m.menu_id =venta.menu_id where venta.usuarios_id = '" + usuarioid + "' and venta.fecha =  '" + fecha + "' ");
                     ResultSet rs2 = pst2.executeQuery();
-                    
-                  if(rs2.next()) {
-                  do{
-                       tablaPlatos.addCell(rs2.getString(1));
-                       tablaPlatos.addCell(rs2.getString(2));
-                       tablaPlatos.addCell(rs2.getString(3));
-                       tablaPlatos.addCell(rs2.getString(4));
-                  } while(rs2.next());
-                  
-                  documento.add(tablaPlatos);
-                  
-              }
-                  
-               } catch (Exception e) {
+
+                    if (rs2.next()) {
+                        do {
+                            tablaPlatos.addCell(rs2.getString(1));
+                            tablaPlatos.addCell(rs2.getString(2));
+                            tablaPlatos.addCell(rs2.getString(3));
+                            tablaPlatos.addCell(rs2.getString(4));
+                        } while (rs2.next());
+
+                        documento.add(tablaPlatos);
+
+                    }
+
+                } catch (Exception e) {
                     System.out.println(e.getMessage());
-                    
+
                 }
-                
-                
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            
-            
-             //MESA
-                   /*   
-                        select DISTINCT id
-                        from mesas m
-                        inner JOIN  venta on m.id = venta.mesas_id
-                        where venta.usuarios_id= 2;
-                  */  
-                   
-                    Paragraph parrafo3 = new Paragraph();
-                    parrafo3.setAlignment(Paragraph.ALIGN_CENTER);
-                    parrafo3.add("\n \n  Mesa Registrada. \n \n");
-                    parrafo3.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY ));
-                    
-                    documento.add(parrafo3);
-            
-                    PdfPTable mesas = new PdfPTable(1);
 
-                    mesas.addCell("Numero Mesas");
-                    
-                    
-                    
-                    
-                    
-                try {
-                    Connection conexion3 = null;
-                    conexion3 = ConexionBD.conectar();
-                    PreparedStatement pst3 = conexion3.prepareStatement("select distinct id from mesas m inner join venta on m.id = venta.mesas_id where venta.usuarios_id = '" + usuarioid + "' and venta.fecha =  '" + fecha + "' " );
-                    ResultSet rs3 = pst3.executeQuery();
-                    
-                  if(rs3.next()) {
-                  do{
-                       mesas.addCell(rs3.getString(1));
-                       
-                  } while(rs3.next());
-                  
-                  documento.add(mesas);
-                  
-              }
-                  
-               } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    
+            //MESA  
+            Paragraph parrafo3 = new Paragraph();
+            parrafo3.setAlignment(Paragraph.ALIGN_CENTER);
+            parrafo3.add("\n \n  Mesa Registrada. \n \n");
+            parrafo3.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY));
+
+            documento.add(parrafo3);
+
+            PdfPTable mesas = new PdfPTable(1);
+
+            mesas.addCell("Numero Mesas");
+
+            try {
+                Connection conexion3 = null;
+                conexion3 = ConexionBD.conectar();
+                PreparedStatement pst3 = conexion3.prepareStatement("select distinct id from mesas m inner join venta on m.id = venta.mesas_id where venta.usuarios_id = '" + usuarioid + "' and venta.fecha =  '" + fecha + "' ");
+                ResultSet rs3 = pst3.executeQuery();
+
+                if (rs3.next()) {
+                    do {
+                        mesas.addCell(rs3.getString(1));
+
+                    } while (rs3.next());
+
+                    documento.add(mesas);
+
                 }
-                
-                
-                
-                        
-                    
-                
 
-                  
-                  //TOTAL
-                   
-                  
-                  /* 
-                    select sum(subtotal) as total
-                    from venta
-                    where venta.usuarios_id= 2;  
-                  
-                  */
-                  
-                  
-                    Paragraph parrafo4 = new Paragraph();
-                    parrafo4.setAlignment(Paragraph.ALIGN_CENTER);
-                    parrafo4.add("\n \n  Total a Pagar  Y Fecha Reserva \n \n");
-                    parrafo4.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY ));
-                    
-                    documento.add(parrafo4);
-            
-                    PdfPTable totalapagar = new PdfPTable(3);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
 
-                    totalapagar.addCell("Total ");
-                    totalapagar.addCell("Fecha de la reserva");
-                    totalapagar.addCell("hora reserva");
-                    
-                    
-                    
-                    
-                    
-                    
-                try {
-                    Connection conexion4 = null;
-                    conexion4 = ConexionBD.conectar();
-                    PreparedStatement pst4 = conexion4.prepareStatement("select sum(subtotal) as total from venta where venta.usuarios_id = '" + usuarioid + "' and venta.fecha =  '" + fecha + "' " );
-                    ResultSet rs4 = pst4.executeQuery();
-                    
-                  if(rs4.next()) {
-                  do{
-                       totalapagar.addCell(rs4.getString(1));
-                       totalapagar.addCell(fecha);
-                       totalapagar.addCell(horario);
-                       
-                  } while(rs4.next());
-                  
-                  documento.add(totalapagar);
-                  
-              }
-                  
-               } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    
+            }
+
+            //TOTAL
+            Paragraph parrafo4 = new Paragraph();
+            parrafo4.setAlignment(Paragraph.ALIGN_CENTER);
+            parrafo4.add("\n \n  Total a Pagar  Y Fecha Reserva \n \n");
+            parrafo4.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY));
+
+            documento.add(parrafo4);
+
+            PdfPTable totalapagar = new PdfPTable(3);
+
+            totalapagar.addCell("Total ");
+            totalapagar.addCell("Fecha de la reserva");
+            totalapagar.addCell("hora reserva");
+
+            try {
+                Connection conexion4 = null;
+                conexion4 = ConexionBD.conectar();
+                PreparedStatement pst4 = conexion4.prepareStatement("select sum(subtotal) as total from venta where venta.usuarios_id = '" + usuarioid + "' and venta.fecha =  '" + fecha + "' ");
+                ResultSet rs4 = pst4.executeQuery();
+
+                if (rs4.next()) {
+                    do {
+                        totalapagar.addCell(rs4.getString(1));
+                        totalapagar.addCell(fecha);
+                        totalapagar.addCell(horario);
+
+                    } while (rs4.next());
+
+                    documento.add(totalapagar);
+
                 }
-                
-                
-                
-                    Paragraph parrafo5 = new Paragraph();
-                    parrafo5.setAlignment(Paragraph.ALIGN_CENTER);
-                    parrafo5.add("\n \n  Muchas Gracias por su compra , vuelva pronto!! \n \n");
-                    parrafo5.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY ));   
-                    
-                    documento.add(parrafo5);
-            
-                   
-                  
-            
-            
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+
+            }
+
+            Paragraph parrafo5 = new Paragraph();
+            parrafo5.setAlignment(Paragraph.ALIGN_CENTER);
+            parrafo5.add("\n \n  Muchas Gracias por su compra , vuelva pronto!! \n \n");
+            parrafo5.setFont(FontFactory.getFont("Tahoma", 14, Font.BOLD, BaseColor.DARK_GRAY));
+
+            documento.add(parrafo5);
             documento.close();
-            
+
             JOptionPane.showMessageDialog(null, "Ticket generado correctamente, muchas gracias por su compra");
-            
-            
-           
-            
-            
-            
-            
-            
-            
-            
-      
-            
         } catch (Exception e) {
-             System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
-        
-        
-        
-        
-        
-       
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        
+
         ImagenMesas im = new ImagenMesas();
         im.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -1368,4 +1206,12 @@ public class Reserva extends javax.swing.JFrame {
     private javax.swing.JTable tblSeleccion;
     private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public Image getIconImage() {
+
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("/imagenes/icono.png"));
+        return retValue;
+    }
+
 }
