@@ -96,6 +96,23 @@ public class ListaReservas extends javax.swing.JFrame {
              System.out.println(e.getMessage());  
              }
 }  
+    
+    //METODO PARA BUSCAR DATOS
+    private void filtrarDatos(String cliente) {
+
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        ResultSet rs = Metodos_sql.getTabla("select * from venta where usuarios_id = '"+ cliente +"' ");
+        modelo.setColumnIdentifiers(new Object[]{"Cliente ", "Fecha", "Horario", "Menu", "Cantidad", "Comensales"});
+        try {
+            while (rs.next()) {
+                modelo.addRow(new Object[]{rs.getString("usuarios_id"), rs.getString("fecha"), rs.getString("horario"), rs.getString("menu_id"), rs.getString("cantidad"), rs.getString("comensales")});
+            }
+            jtReservas.setModel(modelo);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
       
     /**
      * This method is called from within the constructor to initialize the form.
@@ -130,6 +147,12 @@ public class ListaReservas extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 255));
         jLabel1.setText("Buscar Reservas:");
+
+        jtfBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfBuscarKeyReleased(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(102, 0, 102));
@@ -248,6 +271,11 @@ public class ListaReservas extends javax.swing.JFrame {
         // TODO add your handling code here:
         mostrarReservas();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jtfBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfBuscarKeyReleased
+        // TODO add your handling code here:
+        filtrarDatos(jtfBuscar.getText());
+    }//GEN-LAST:event_jtfBuscarKeyReleased
 
     /**
      * @param args the command line arguments
