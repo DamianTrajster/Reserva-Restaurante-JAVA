@@ -142,7 +142,7 @@ public class Cartilla extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel1.setText("CARTILLA");
+        jLabel1.setText("CARTA");
 
         btnVolver.setBackground(new java.awt.Color(255, 153, 0));
         btnVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N

@@ -509,7 +509,7 @@ public class Reserva extends javax.swing.JFrame {
 
         btnVerCartilla.setBackground(new java.awt.Color(153, 255, 153));
         btnVerCartilla.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnVerCartilla.setText("VER CARTILLA");
+        btnVerCartilla.setText("VER CARTA");
         btnVerCartilla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVerCartillaActionPerformed(evt);

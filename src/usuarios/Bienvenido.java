@@ -63,7 +63,7 @@ Metodos_sql metodos = new Metodos_sql();
 
         btnCartilla.setBackground(new java.awt.Color(153, 255, 153));
         btnCartilla.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        btnCartilla.setText("Cartilla");
+        btnCartilla.setText("Carta");
         btnCartilla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCartillaActionPerformed(evt);
